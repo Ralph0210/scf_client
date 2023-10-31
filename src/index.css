@@ -1,0 +1,21 @@
+html {
+  font-size: 62.5%;
+  height: 100vh
+}
+
+body {
+  height: 100vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green: #495e57;
+  --yellow: #F4CE14;
+
+  --karla_regular: 'Karla', sans-serif;
+  --markazi: 'Markazi Text', serif;
+}

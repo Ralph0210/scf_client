@@ -1,0 +1,86 @@
+{
+  "name": "SCF",
+  "description": "Survey of Consumer Finance",
+  "interested": false,
+  "children": [
+    {
+      "name": "Demographics",
+      "description": "Variables related to personal and household demographics.",
+      "interested": false,
+      "children": [
+        {
+          "name": "Basic Information",
+          "description": "Basic demographic information such as age, sex, education, marital status, race, and family structure.",
+          "interested": false,
+          "children": [
+            {"name": "AGE", "description": "Age of the respondent.", "interested": false},
+            {"name": "HHSEX", "description": "Household sex.", "interested": false},
+            {"name": "EDUC", "description": "Education level of the respondent.", "interested": false},
+            {"name": "MARRIED", "description": "Marital status of the respondent.", "interested": false},
+            {"name": "RACE", "description": "Race of the respondent.", "interested": false}
+          ]
+        },
+        {
+          "name": "Household",
+          "description": "Household characteristics including weight, presence of children, family structure, rent, income, and food expenses.",
+          "interested": false,
+          "children": [
+            {"name": "KIDS", "description": "Number of children in the household.", "interested": false},
+            {"name": "FAMSTRUCT", "description": "Family structure of the household.", "interested": false},
+            {"name": "RENT", "description": "Rent paid by the household.", "interested": false},
+            {"name": "INCOME", "description": "Total household income.", "interested": false},
+            {"name": "FOODHOME", "description": "Expenditure on food at home.", "interested": false},
+            {"name": "FOODAWAY", "description": "Expenditure on food away from home.", "interested": false},
+            {"name": "FOODDELV", "description": "Expenditure on food delivery.", "interested": false}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Labor Force",
+      "description": "Variables related to labor force participation and earnings.",
+      "interested": false,
+      "children": [
+        {
+          "name": "Employment",
+          "description": "Variables related to employment status, occupation categories, and industry categories.",
+          "interested": false,
+          "children": [
+            {"name": "LF", "description": "Labor force participation status.", "interested": false},
+            {"name": "OCCAT1", "description": "Occupation category 1.", "interested": false},
+            {"name": "OCCAT2", "description": "Occupation category 2.", "interested": false},
+            {"name": "INDCAT", "description": "Industry category of employment.", "interested": false}
+          ]
+        },
+        {
+          "name": "Earnings",
+          "description": "Variables pertaining to various sources of earnings including wages, business income, interest and dividend income, and more.",
+          "interested": false,
+          "children": [
+            {"name": "WAGEINC", "description": "Earnings from wages and salary.", "interested": false},
+            {"name": "BUSSEFARMINC", "description": "Earnings from business or farming.", "interested": false},
+            {"name": "INTDIVINC", "description": "Income from interest and dividends.", "interested": false},
+            {"name": "KGINC", "description": "Income from investments.", "interested": false},
+            {"name": "SSRETINC", "description": "Income from social security and retirement.", "interested": false},
+            {"name": "TRANSFOTHINC", "description": "Income from other sources.", "interested": false}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Financial Behavior",
+      "description": "Variables related to saving, spending, and financial events.",
+      "interested": false,
+      "children": [
+        {"name": "SAVED", "description": "Saving behavior.", "interested": false},
+        {"name": "SPENDMOR", "description": "Tendency to spend more.", "interested": false},
+        {"name": "SPENDLESS", "description": "Tendency to spend less.", "interested": false},
+        {"name": "EXPENSHILO", "description": "High expenditure on housing.", "interested": false},
+        {"name": "LATE", "description": "Late payments.", "interested": false},
+        {"name": "HPAYDAY", "description": "Use of payday loans.", "interested": false},
+        {"name": "BNKRUPLAST5", "description": "Bankruptcy history in the last 5 years.", "interested": false},
+        {"name": "KNOWL", "description": "Knowledge about financial risks and behaviors.", "interested": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "financial_health_and_well-being": [
+    {
+      "name": "Household Income & Wealth",
+      "variables": ["INCOME", "WAGEINC", "NETWORTH"],
+      "interested": false
+    },
+    {
+      "name": "Education & Financial Well-being",
+      "variables": ["EDUC", "FINLIT"],
+      "interested": false
+    },
+    {
+      "name": "Marital Status & Savings Behavior",
+      "variables": ["MARRIED", "SAVED", "SAVINGS"],
+      "interested": false
+    },
+    {
+      "name": "Employment & Labor Force Participation",
+      "variables": ["LF", "OCCAT2"],
+      "interested": false
+    }
+  ],
+  "financial_disparities_and_diversity": [
+    {
+      "name": "Racial & Ethnic Disparities in Wealth",
+      "variables": [ "RACECL4", "NETWORTH"],
+      "interested": false
+    },
+    {
+      "name": "Income Disparities Across Age Groups",
+      "variables": ["AGECL", "INCOME"],
+      "interested": false
+    },
+    {
+      "name": "Wealth Disparities by Educational Attainment",
+      "variables": ["EDUC", "NETWORTH"],
+      "interested": false
+    }
+  ],
+  "financial_planning_and_investment": [
+    {
+      "name": "Debt & Credit Usage",
+      "variables": ["CREDIT", "HBORRCC", "HBORRALT"],
+      "interested": false
+    },
+    {
+      "name": "Retirement Savings & Pension Plans",
+      "variables": ["RETQLIQ", "DBPLANT", "BPLANCJ"],
+      "interested": false
+    },
+    {
+      "name": "Banking & Savings Account Choices",
+      "variables": ["CHECKING", "SAVING", "HSAVING"],
+      "interested": false
+    },
+    {
+      "name": "Investment Choices & Risk Tolerance",
+      "variables": ["STOCKS", "EQUITINC", "FINRISK"],
+      "interested": false
+    }
+  ]
+}
+

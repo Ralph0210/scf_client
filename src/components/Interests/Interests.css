@@ -1,0 +1,47 @@
+.interests_container {
+    margin: 0 auto 0 auto;
+    width: 122rem;
+}
+
+.title_description {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.title_description h1 {
+    color: #D81E5B;
+}
+
+.title_description p {
+    width: 60rem;
+    color: #1E2019;
+font-family: Helvetica Neue;
+font-size: 2rem;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+margin-bottom: 7.2rem;
+}
+
+
+
+@media (max-width: 1300px) {
+    .interests_container{
+        width: 100vw;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+  }
+
+  @media (max-width: 821px) {
+    .interests_container{
+        position: relative;
+        width: 100vw;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+  }

@@ -1,0 +1,95 @@
+.mapsvg{
+    cursor: grab;
+}
+.circle {
+    z-index: 1;
+    cursor: pointer;
+}
+
+.node-circle {
+    fill: #000;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+.node {
+    font: 10px sans-serif;
+}
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+.demo-circle {
+    fill: #E57FA1;
+}
+
+.demo-circle:hover {
+    transition: 0.5s ease-in-out;
+    fill: #D81E5B;
+    cursor: pointer;
+}
+
+.root-circle {
+    fill: #0E518E;
+}
+
+.root-circle:hover{
+    transition: 0.5s ease-in-out;
+    fill: #0E518E;
+    cursor: pointer;
+}
+
+.fin-circle {
+    fill: #BFDFC5;
+}
+
+.fin-circle:hover {
+    transition: 0.5s ease-in-out;
+    fill: #70B77E;
+    cursor: pointer;
+}
+
+.labor-circle {
+    fill: #FFCC86;
+}
+
+.labor-circle:hover {
+    transition: 0.5s ease-in-out;
+    fill: #FF9F1C;
+    cursor: pointer;
+}
+
+.normal-circle {
+    fill: #000;
+}
+
+.map_parent_container {
+    width: 800;
+    height: 800;
+}
+
+text {
+    z-index: 3;
+}
+
+.pulse {
+    r:15px;
+    animation: pulseNode 1s infinite;
+}
+
+
+
+@keyframes pulseNode {
+    0% {
+      transform: scale(0.9); /* Removed @include */
+    }
+    70% {
+      transform: scale(1); /* Removed @include */
+      box-shadow: 0 0 0 10px rgba(90, 153, 212, 0); /* Updated box-shadow color */
+    }
+    100% {
+      transform: scale(0.9); /* Removed @include */
+      box-shadow: 0 0 0 0 rgba(90, 153, 212, 0); /* Updated box-shadow color */
+    }
+  }

@@ -1,0 +1,349 @@
+{
+  "name": "SCF",
+  "children": [
+    {
+      "name": "Demographics",
+      "description": "Variables related to personal and household demographics.",
+      "children": [
+        {
+          "name": "Age",
+          "description": "Age of the respondent.",
+          "value": "AGECL",
+          "isCategorical": true
+        },
+        {
+          "name": "Marital Status",
+          "description": "Marital status of the respondent.",
+          "value": "MARRIED",
+          "isCategorical": true
+        },
+        {
+          "name": "Children Count",
+          "description": "The number of children in the household, including natural children, step-children, and foster children of the reference person, spouse, or partner. This variable provides a count of all children within the household based on the available data.",
+          "value": "KIDS",
+          "isCategorical": false
+        },
+        {
+          "name": "Race Category",
+          "description": "Detailed race and ethnicity category of the respondent. This variable categorizes respondents into four groups based on race and ethnicity.",
+          "value": "RACECL4",
+          "isCategorical": true
+        },
+        {
+          "name": "Occupation Classification",
+          "description": "Occupation classification of the reference person. This variable further categorizes the reference person's occupation into four groups:",
+          "value": "OCCAT2",
+          "isCategorical": true
+        },
+        {
+          "name": "Monthly Rent Spending",
+          "description": "Monthly spending on rent for all housing types, including mobile homes.",
+          "value": "RENT",
+          "isCategorical": false
+        }
+      ]
+    },
+    {
+      "name": "Income and Earnings",
+      "description": "Variables related to income and earnings of respondents.",
+      "children": [
+        {
+          "name": "Household Income",
+          "description": "Total household income in the previous calendar year. This variable represents the combined income of all household members in the year before the survey. It includes various sources of income, such as wages, business/farm income, interest/dividends income, social security/retirement income, other transfers, and rental income. For the years 2004 and beyond, it also includes withdrawals from Individual Retirement Accounts (IRAs) and tax-deferred pension accounts, which are converted to annual frequency. For the year 2010 and beyond, specific pension grids are dropped.",
+          "value": "INCOME",
+          "isCategorical": false
+        },
+        {
+          "name": "Wage and Salary Income",
+          "description": "Wage and salary income for the household in the previous calendar year. This variable represents the income earned by all household members from wages or salaries. It is one of the components of the total household income.",
+          "value": "WAGEINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Business and Farm Income",
+          "description": "Business and farm income for the household in the previous calendar year. This variable represents the combined income from business and farm activities for all household members. It includes profits, dividends, or any financial gains related to operating a business or farm.",
+          "value": "BUSSEFARMINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Interest and Dividend Income",
+          "description": "Interest and dividend income for the household in the previous calendar year. This variable represents the combined income from interest on savings accounts, certificates of deposit, bonds, and dividends from investments, such as stocks or mutual funds. It includes all income earned from interest and dividends.",
+          "value": "INTDIVINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Capital Gains Income",
+          "description": "Capital gains income for the household in the previous calendar year. This variable represents the income generated from the sale of capital assets, such as stocks, real estate, or other investments. It includes any profits or gains realized when these assets are sold or exchanged.",
+          "value": "KGINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Retirement Benefits",
+          "description": "Social Security and retirement income for the household in the previous calendar year. This variable represents the income received from Social Security benefits, pensions, annuities, and other retirement sources. It includes regular disbursements from retirement accounts and similar sources.",
+          "value": "SSRETINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Other Income",
+          "description": "Income from other sources, such as rental income or royalties.",
+          "value": "TRANSFOTHINC",
+          "isCategorical": false
+        },
+        {
+          "name": "Normalized Income",
+          "description": "Income adjusted for various factors to provide a normalized measure.",
+          "value": "NORMINC",
+          "isCategorical": false
+        }
+      ]
+    },
+    {
+      "name": "Financial Assets",
+      "description": "Variables related to saving, spending, and financial risk.",
+      "children": [
+        {
+          "name": "Total Financial Assets",
+          "description": "Total value of financial assets",
+          "value": "FIN",
+          "isCategorical": false
+        },
+        {
+          "name": "Checking Account",
+          "description": "Balance in checking accounts other than money market accounts.",
+          "value": "CHECKING",
+          "isCategorical": false
+        },
+        {
+          "name": "Prepaid Card",
+          "description": "Balance in prepaid cards",
+          "value": "PREPAID",
+          "isCategorical": false
+        },
+        {
+          "name": "Savings Account",
+          "description": "Balance in savings accounts.",
+          "value": "SAVING",
+          "isCategorical": false
+        },
+        {
+          "name": "Money Market Deposit Account",
+          "description": "Balance in money market deposit accounts",
+          "value": "MMDA",
+          "isCategorical": false
+        },
+        {
+          "name": "Money Market Mutual Fund",
+          "description": "Balance in money market mutual funds",
+          "value": "MMMF",
+          "isCategorical": false
+        },
+        {
+          "name": "Call Account Balance at Brokerages",
+          "description": "Balance in call accounts at brokerages",
+          "value": "CALL",
+          "isCategorical": false
+        },
+        {
+          "name": "Liquid Assets",
+          "description": "Total balance in all types of transaction accounts (liquid assets)",
+          "value": "LIQ",
+          "isCategorical": false
+        },
+        {
+          "name": "Certificates of Deposit",
+          "description": "Balance in certificates of deposit",
+          "value": "CDS",
+          "isCategorical": false
+        },
+        {
+          "name": "Total Directly-Held Mutual Funds",
+          "description": "Total balance in directly-held mutual funds, excluding money market mutual funds",
+          "value": "NMMF",
+          "isCategorical": false
+        },
+        {
+          "name": "Stocks",
+          "description": "Balance in stocks",
+          "value": "STOCKS",
+          "isCategorical": false
+        },
+        {
+          "name": "Total Bonds",
+          "description": "Total holding of bonds, excluding bond funds or savings bonds",
+          "value": "BOND",
+          "isCategorical": false
+        },
+        {
+          "name": "Retirement Accounts",
+          "description": "Balance in individual retirement accounts/Keoghs",
+          "value": "IRAKH",
+          "isCategorical": false
+        },
+        {
+          "name": "Savings Bonds",
+          "description": "Balance in savings bonds",
+          "value": "SAVBND",
+          "isCategorical": false
+        },
+        {
+          "name": "Cash Value of Whole Life Insurance",
+          "description": "Cash value of whole life insurance",
+          "value": "CASHLI",
+          "isCategorical": false
+        },
+        {
+          "name": "Cash Value of Annuities",
+          "description": "Cash value of annuities",
+          "value": "ANNUIT",
+          "isCategorical": false
+        },
+        {
+          "name": "Cash Value of Trusts",
+          "description": "Cash value of trusts",
+          "value": "TRUSTS",
+          "isCategorical": false
+        },
+        {
+          "name": "Other Managed Assets",
+          "description": "Balance in other managed assets, including trusts and annuities",
+          "value": "OTHMA",
+          "isCategorical": false
+        }
+      ]
+    },
+    {
+      "name": "Nonfinancial Assets",
+      "description": "Variables related to banking and savings behavior.",
+      "children": [
+        {
+          "name": "Value of All Vehicles",
+          "description": "Total value of all vehicles, including autos, motor homes, RVs, airplanes, and boats.",
+          "value": "VEHIC",
+          "isCategorical": false
+        },
+        {
+          "name": "Have Any Vehicles",
+          "description": "Indicator of whether the household has any vehicles (1=yes, 0=no).",
+          "value": "HVEHIC",
+          "isCategorical": true
+        },
+        {
+          "name": "Have Leased Vehicle",
+          "description": "Indicator of whether the household has a leased vehicle (1=yes, 0=no).",
+          "value": "LEASE",
+          "isCategorical": true
+        },
+        {
+          "name": "Value of Leased Vehicles",
+          "description": "Total value of leased vehicles (including X8163 and X8164).",
+          "value": "VLEASE",
+          "isCategorical": false
+        },
+        {
+          "name": "Total Number of Vehicles",
+          "description": "Total number of vehicles (owned and leased).",
+          "value": "NVEHIC",
+          "isCategorical": false
+        },
+        {
+          "name": "Value of Primary Residence",
+          "description": "Value of the primary residence. Calculated based on X507, X604, X614, X623, X716, X513, and X526.",
+          "value": "HOUSES",
+          "isCategorical": false
+        },
+        {
+          "name": "Other Residential Real Estate",
+          "description": "Includes land contracts/notes household has made, properties other than the principal residence that are coded as 1-4 family residences, time shares, and vacation homes. Calculated based on X1306, X1310, X1325, X1329, X1339, X1405, X1409, X1505, X1509, X1605, X1609, X1619, X1703, X1705, X1706, X1803, X1805, X1806, X1903, X1905, X1906, and X2002.",
+          "value": "ORESRE",
+          "isCategorical": false
+        },
+        {
+          "name": "Total Nonfinancial Assets",
+          "description": "The total value of nonfinancial assets, including vehicles, primary residence, other residential real estate, NNRESRE, business assets, and other nonfinancial assets. Calculated based on VEHIC, HOUSES, ORESRE, NNRESRE, BUS, and OTHNFIN.",
+          "value": "NFIN",
+          "isCategorical": false
+        },
+        {
+          "name": "Have Any Nonfinancial Assets",
+          "description": "Indicator of whether the household has any nonfinancial assets (1=yes, 0=no).",
+          "value": "HNFIN",
+          "isCategorical": true
+        },
+        {
+          "name": "Financial Spending Status",
+          "description": "Methods and strategies used for saving money.",
+          "value": "WSAVED",
+          "data": {
+            "1": "Spending exceeded income",
+            "2": "Spending equaled income",
+            "3": "Spending was less than income"
+          },
+          "isCategorical": true
+        },
+        {
+          "name": "Use of Prepaid Cards",
+          "description": "Usage and management of prepaid cards for financial transactions.",
+          "value": "PREPAID"
+        },
+        {
+          "name": "Savings Bonds",
+          "description": "Ownership and management of savings bonds.",
+          "value": "SAVBND"
+        },
+        {
+          "name": "High Savings",
+          "description": "Indication of high levels of savings and reserve.",
+          "value": "HSAVING"
+        }
+      ]
+    },
+    {
+      "name": "Debt",
+      "description": "Variables related to assets and debt.",
+      "children": [
+        {
+          "name": "Total Debt",
+          "description": "The total debt of the household, calculated as the sum of mortgage debt (MRTHEL), residential debt (RESDBT), other location-based debt (OTHLOC), credit card balances (CCBAL), installment debt (INSTALL), and other debts (ODEBT).",
+          "value": "DEBT",
+          "isCategorical": false
+        },
+        {
+          "name": "Has Any Debts",
+          "description": "A binary indicator (1 or 0) to show whether the household has any debts. It is based on whether the total debt (DEBT) is greater than zero.",
+          "value": "HDEBT",
+          "isCategorical": true
+        },
+        {
+          "name": "Net Housing Mortgage Debt",
+          "description": "The net housing mortgage debt (NH_MORT) of the household, calculated as the difference between mortgage debt (MRTHEL) and home equity line of credit (HELOC).",
+          "value": "NH_MORT",
+          "isCategorical": false
+        },
+        {
+          "name": "Home Equity",
+          "description": "Home Equity (HOMEEQ) represents the calculated net equity in the household's principal residence. It is computed as the difference between the estimated market value of the home (HOUSES) and the total mortgage debt (MRTHEL) secured by the home. A positive value indicates positive equity, meaning the market value exceeds the mortgage debt, while a negative value suggests the mortgage debt exceeds the estimated market value of the home.",
+          "value": "HOMEEQ",
+          "isCategorical": false
+        },
+        {
+          "name": "Debt for Other Residential Property",
+          "description": "Debt for Other Residential Property (RESDBT) represents the total debt associated with residential properties other than the principal residence. This includes land contracts, debt related to vacation homes, and other residential properties. Debt for nonresidential real estate is netted out of the corresponding assets. The value of RESDBT is computed based on various mortgage loans and installment debt related to these properties.",
+          "value": "RESDBT",
+          "isCategorical": false
+        },
+        {
+          "name": "Credit Card Balance",
+          "description": "Credit Card Balance (CCBAL) represents the total balance of credit card debt for the household. This includes revolving debt on credit cards and excludes charge accounts at stores. The value of CCBAL is computed based on specific questions regarding credit card debt balances.",
+          "value": "CCBAL",
+          "isCategorical": false
+        },
+        {
+          "name": "Installment Loans",
+          "description": "Installment Loans (INSTALL) represent the total balance of installment loans for the household. These loans include vehicle loans, education loans, and other installment loans. The value of INSTALL is computed based on specific questions about installment loan balances.",
+          "value": "INSTALL",
+          "isCategorical": false
+        }
+      ]
+    }
+  ]
+}

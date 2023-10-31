@@ -1,0 +1,27 @@
+.map_component_container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.map_component_container > .alert {
+    display: none;
+}
+
+@media (max-width: 821px) {
+    .alert_screen_size {
+        display: flex;
+    }
+
+    .map_component_container > .alert {
+        border-radius: 0;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(30, 32, 25, 0.70);
+        color: white;
+    }
+}

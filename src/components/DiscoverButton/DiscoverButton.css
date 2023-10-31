@@ -1,0 +1,36 @@
+.discoverbutton {
+    border: 0;
+    width: 27.4rem;
+    height: 6.5rem;
+    flex-shrink: 0;
+    border-radius: 2rem;
+    background: #D81E5B;
+    margin-left: 12rem;
+    margin-bottom: 12rem;
+    cursor: pointer;
+
+    color: #FFF;
+    font-family: Helvetica Neue;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: transform 0.2s;
+}
+
+.discoverbutton:hover{
+    transform: scale(1.2);
+}
+
+.screen_too_small {
+    display: none;
+}
+
+@media (max-width: 821px) {
+
+    .screen_too_small p{
+        padding-left: 2rem;
+        /* padding-top: 1rem; */
+    }
+  }
+

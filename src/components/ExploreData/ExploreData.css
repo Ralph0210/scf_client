@@ -1,0 +1,75 @@
+
+.circle {
+    z-index: 1;
+    cursor: pointer;
+}
+
+.node-circle {
+    fill: #000;
+    /* stroke: steelblue; */
+    /* stroke-width: 1.5px; */
+}
+.node {
+    font: 10px sans-serif;
+}
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+.demo-circle {
+    fill: #D81E5B
+}
+
+.root-circle {
+    fill: rgba(14, 81, 142);
+}
+
+.fin-circle {
+    fill: #70B77E;
+}
+
+.labor-circle {
+    fill: #FF9F1C;
+}
+
+.normal-circle {
+    fill: #000;
+}
+
+.In-circle{
+    fill: #9FA4C4;
+}
+
+.non-circle{
+    fill: #06908F;
+}
+
+.red-circle {
+    /* fill: aqua; */
+    stroke: red;       /* Border color */
+    stroke-width: 2px;
+    
+}
+
+.map_parent_container {
+    width: 100%;
+    height: 100%;
+}
+
+text {
+    z-index: 3;
+    font-family: Helvetica Neue;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #1e2019;
+  z-index: 999;
+}
+
+.pan_container{
+    width: 100%;
+    height: 100%;
+}

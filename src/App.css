@@ -1,0 +1,15 @@
+.App {
+    background: #FDFFFC;
+    min-width: 100vw; /* 100% of viewport width */
+  min-height: 100vh; /* 100% of viewport height */
+  /* overflow: hidden; */
+}
+
+.overflowing-content {
+    overflow: hidden; /* Display scrollbars if content overflows */
+    /* Additional styling */
+  }
+
+.map_app{
+  display: none;
+}

@@ -1,0 +1,82 @@
+{
+    "name": "Variable Categories",
+    "children": [
+      {
+        "name": "Demographics",
+        "description": "Variables related to personal and household demographics.",
+        "children": [
+          {
+            "name": "Basic Information",
+            "description": "Basic demographic information such as age, sex, education, marital status, race, and family structure.",
+            "children": [
+              {"name": "AGE", "description": "Age of the respondent."},
+              {"name": "HHSEX", "description": "Household sex."},
+              {"name": "EDUC", "description": "Education level of the respondent."},
+              {"name": "MARRIED", "description": "Marital status of the respondent."},
+              {"name": "RACE", "description": "Race of the respondent."},
+              {"name": "FAMSTRUCT", "description": "Family structure of the household."},
+              {"name": "AGECL", "description": "Age category."},
+              {"name": "EDCL", "description": "Education category."},
+              {"name": "RACECL", "description": "Race category."},
+              {"name": "RACECL4", "description": "Race category with 4 options."}
+            ]
+          },
+          {
+            "name": "Household",
+            "description": "Household characteristics including weight, presence of children, family structure, rent, income, and food expenses.",
+            "children": [
+              {"name": "KIDS", "description": "Number of children in the household."},
+              {"name": "RENT", "description": "Rent paid by the household."},
+              {"name": "INCOME", "description": "Total household income."},
+              {"name": "FOODHOME", "description": "Expenditure on food at home."},
+              {"name": "FOODAWAY", "description": "Expenditure on food away from home."},
+              {"name": "FOODDELV", "description": "Expenditure on food delivery."}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Labor Force",
+        "description": "Variables related to labor force participation and earnings.",
+        "children": [
+          {
+            "name": "Employment",
+            "description": "Variables related to employment status, occupation categories, and industry categories.",
+            "children": [
+              {"name": "LF", "description": "Labor force participation status."},
+              {"name": "OCCAT1", "description": "Occupation category 1."},
+              {"name": "OCCAT2", "description": "Occupation category 2."},
+              {"name": "INDCAT", "description": "Industry category of employment."}
+            ]
+          },
+          {
+            "name": "Earnings",
+            "description": "Variables pertaining to various sources of earnings including wages, business income, interest and dividend income, and more.",
+            "children": [
+              {"name": "WAGEINC", "description": "Earnings from wages and salary."},
+              {"name": "BUSSEFARMINC", "description": "Earnings from business or farming."},
+              {"name": "INTDIVINC", "description": "Income from interest and dividends."},
+              {"name": "KGINC", "description": "Income from investments."},
+              {"name": "SSRETINC", "description": "Income from social security and retirement."},
+              {"name": "TRANSFOTHINC", "description": "Income from other sources."}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Financial Behavior",
+        "description": "Variables related to saving, spending, and financial events.",
+        "children": [
+          {"name": "SAVED", "description": "Saving behavior."},
+          {"name": "SPENDMOR", "description": "Tendency to spend more."},
+          {"name": "SPENDLESS", "description": "Tendency to spend less."},
+          {"name": "EXPENSHILO", "description": "High expenditure on housing."},
+          {"name": "LATE", "description": "Late payments."},
+          {"name": "HPAYDAY", "description": "Use of payday loans."},
+          {"name": "BNKRUPLAST5", "description": "Bankruptcy history in the last 5 years."},
+          {"name": "KNOWL", "description": "Knowledge about financial risks and behaviors."}
+        ]
+      }
+    ]
+  }
+  
