@@ -6,7 +6,7 @@ require("dotenv").config();
 const path = require('path')
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(cors());
@@ -243,7 +243,7 @@ app.get("*", (req, res) => {
 });
 
 db.sequelize.sync().then(() => {
-  app.listen(process.env.PORT || 3001 || 3306,() => {
+  app.listen(port,() => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 })
