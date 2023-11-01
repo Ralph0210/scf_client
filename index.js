@@ -13,15 +13,15 @@ app.use(cors());
 
 // Define the tables for each year
 const YearTables = {
-  1989: scfp1989,
-  1992: scfp1992,
-  1995: scfp1995,
-  1998: scfp1998,
-  2001: scfp2001,
-  2004: scfp2004,
-  2007: scfp2007,
-  2010: scfp2010,
-  2013: scfp2013,
+  // 1989: scfp1989,
+  // 1992: scfp1992,
+  // 1995: scfp1995,
+  // 1998: scfp1998,
+  // 2001: scfp2001,
+  // 2004: scfp2004,
+  // 2007: scfp2007,
+  // 2010: scfp2010,
+  // 2013: scfp2013,
   2016: scfp2016,
   2019: scfp2019,
 };

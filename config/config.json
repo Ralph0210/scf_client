@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "Rain0210",
+    "username": "ralph",
+    "password": "Yuhuan0210!",
     "database": "scf",
-    "host": "localhost",
+    "host": "testingscf.mysql.database.azure.com",
     "dialect": "mysql"
   },
   "test": {
@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "semgpnffod",
-    "password": "867P76P43PXAN25A$",
-    "database": "myscfanalysis-database",
-    "host": "myscfanalysis-server.mysql.database.azure.com",
+    "username": "ralph",
+    "password": "Yuhuan0210!",
+    "database": "scf",
+    "host": "testingscf.mysql.database.azure.com",
     "dialect": "mysql"
   }
 }
