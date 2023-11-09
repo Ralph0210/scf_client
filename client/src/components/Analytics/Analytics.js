@@ -27,8 +27,7 @@ const getRandomColor = () => {
 };
 
 const Analytics = () => {
-  const [lines, setLines] = useState([])
-  const [lineColors, setLineColors] = useState([]);
+  const [lines, setLines] = useState([]);
   const [uniqueValues, setUniqueValues] = useState([
     [
       {
@@ -39,7 +38,7 @@ const Analytics = () => {
       { label: "45-54", value: 3 },
       { label: "55-64", value: 4 },
       { label: "65-74", value: 5 },
-      { label: "75+", value: 6 }
+      { label: "75+", value: 6 },
     ],
   ]);
   const [dataSelections, setDataSelections] = useState([
@@ -48,18 +47,16 @@ const Analytics = () => {
       selectedDataName: "Household Income",
       selectedDistributionName: "Age",
       selectedDistribution: "AGECL",
-      selectedDisplay: [ {label: "35 <", value: 1},
-      ],
+      selectedDisplay: [{ label: "35 <", value: 1 }],
     },
   ]);
 
   const [data, setData] = useState([]);
-  const [dataForGraphing, setDataForGraphing] = useState([])
+  const [dataForGraphing, setDataForGraphing] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("Mean"); // Set initial selected option
 
   const [value, setValue] = useState([1989, 2019]);
   // console.log(data, 'data')
-
 
   useEffect(() => {
     // Create a function to fetch data for a single item in dataSelections
@@ -91,8 +88,8 @@ const Analytics = () => {
               apiParams.selectedDistribution,
               displayValue.value, // Use the current displayValue from the map
               apiParams.selectedUnit,
-             apiParams.selectedDataName,
-             apiParams.selectedDistributionName,
+              apiParams.selectedDataName,
+              apiParams.selectedDistributionName,
               matchingDisplay.label // Use the current displayValue from the map
             );
             // Find the selectedDisplay object that matches the current displayValue.value
@@ -123,16 +120,17 @@ const Analytics = () => {
 
   function mergeDataByYear(data) {
     const mergedData = {};
-  
-    data.forEach(dataArray => {
-      dataArray.forEach(dataArray2 => {
-        dataArray2.forEach(item => {
-        const year = item.year;
-        if (!mergedData[year]) {
-          mergedData[year] = {};
-        }
-        Object.keys(item).forEach(key => {
-          mergedData[year][key] = item[key];})
+
+    data.forEach((dataArray) => {
+      dataArray.forEach((dataArray2) => {
+        dataArray2.forEach((item) => {
+          const year = item.year;
+          if (!mergedData[year]) {
+            mergedData[year] = {};
+          }
+          Object.keys(item).forEach((key) => {
+            mergedData[year][key] = item[key];
+          });
         });
       });
     });
@@ -142,60 +140,86 @@ const Analytics = () => {
   }
 
   useEffect(() => {
-    const newData = mergeDataByYear(data)
-    setDataForGraphing(newData)
-    console.log("dataforgraphing", newData)
-  }, [data, dataSelections])
+    const newData = mergeDataByYear(data);
+    setDataForGraphing(newData);
+    console.log("dataforgraphing", newData);
+  }, [data, dataSelections]);
   // console.log(dataSelections, "dataselections")
+
+  const lineColors = [
+    '#0E518E',
+    '#70B77E',
+    '#FF9F1C',
+    '#D81E5B',
+    '#092327',
+    '#2B9EB3',
+    '#3E6259',
+    '#561643',
+    '#C05746',
+    '#001242'
+  ];
 
   useEffect(() => {
     let line = null;
     if (dataForGraphing.length > 0 && dataSelections[0]) {
       line = Object.keys(dataForGraphing[0])
-        .filter(key => key !== 'year')
+        .filter((key) => key !== "year")
         .map((key, index) => {
-            return (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={key}
-                stroke={`hsl(${Math.random() * 360}, 70%, 50%)`}
-                activeDot={{ r: 8 }}
-              />
-            );
+          return (
+            <Line
+              key={index}
+              type="monotone"
+              dataKey={key}
+              // stroke={`hsl(${Math.random() * 360}, 70%, 50%)`}
+              stroke={lineColors[index % lineColors.length]}
+              activeDot={{ r: 8 }}
+            />
+          );
         });
-        setLines(line)
+      setLines(line);
     }
   }, [dataForGraphing, dataSelections]);
 
+  const defaultChartHeight = 350;
+  const extendedChartHeight = 500;
+
+  const getChartHeight = () => {
+    if (dataForGraphing.length > 0 && dataForGraphing[0].length > 8) {
+      console.log('true hehe')
+      return extendedChartHeight;
+    }
+    return defaultChartHeight;
+  };
+
+  const tooltipFormatter = (value, name) => [`$${value.toFixed(2)}`, name];
 
   return (
     <div className="analytics_container">
       <div className="source">
-      <DataSelection
-        uniqueValues={uniqueValues}
-        setUniqueValues={setUniqueValues}
-        dataSelections={dataSelections}
-        setDataSelections={setDataSelections}
-        data={data}
-        setData={setData}
-      />
+        <DataSelection
+          uniqueValues={uniqueValues}
+          setUniqueValues={setUniqueValues}
+          dataSelections={dataSelections}
+          setDataSelections={setDataSelections}
+          data={data}
+          setData={setData}
+        />
 
-      <DistributionSelection
-        dataSelections={dataSelections}
-        setDataSelections={setDataSelections}
-        setUniqueValues={setUniqueValues}
-      />
+        <DistributionSelection
+          dataSelections={dataSelections}
+          setDataSelections={setDataSelections}
+          setUniqueValues={setUniqueValues}
+        />
 
-      <DisplaySelection
-        uniqueValues={uniqueValues}
-        setUniqueValues={setUniqueValues}
-        dataSelections={dataSelections}
-        setDataSelections={setDataSelections}
-        data={data}
-        setData={setData}
-      />
-    </div>
+        <DisplaySelection
+          uniqueValues={uniqueValues}
+          setUniqueValues={setUniqueValues}
+          dataSelections={dataSelections}
+          setDataSelections={setDataSelections}
+          data={data}
+          setData={setData}
+        />
+      </div>
 
       <div className="adjustment">
         <UnitSelection
@@ -215,9 +239,10 @@ const Analytics = () => {
         </div>
       </div>
 
+      {lines && (<ResponsiveContainer width="90%" height={350}>
       <LineChart
-        width={900}
-        height={300}
+        // width={1000}
+        // height={getChartHeight()}
         data={dataForGraphing}
         margin={{
           top: 5,
@@ -229,10 +254,21 @@ const Analytics = () => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" />
         <YAxis />
-        <Tooltip />
-        <Legend />
+        <Tooltip
+        formatter={tooltipFormatter} 
+          wrapperStyle={{
+            fontFamily: "Helvetica Neue",
+            fontSize: "1.4rem",
+            width: "max-width",
+          }}
+          itemStyle={{ display: "flex", gap: "0.5rem" }}
+        />
+        <Legend
+          wrapperStyle={{ fontFamily: "Helvetica Neue", fontSize: "1.4rem" }}
+        />
         {lines}
       </LineChart>
+      </ResponsiveContainer>)}
     </div>
   );
 };

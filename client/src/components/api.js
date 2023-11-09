@@ -2,6 +2,7 @@ import axios from 'axios';
 import baseUrl from '../baseUrl';
 
 const baseURL = baseUrl
+// const baseURL = 'http://localhost:3001';
 
 const api = axios.create({
   baseURL: baseURL,
@@ -26,6 +27,7 @@ export async function retrieve(selectedYear, selectedData, selectedDistribution,
     });
 
     // Return the data from the response
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error in retrieve function:', error);

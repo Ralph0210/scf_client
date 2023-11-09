@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "ralph",
-    "password": "Yuhuan0210!",
+    "username": "root",
+    "password": "Rain0210",
     "database": "scf",
-    "host": "testingscf.mysql.database.azure.com",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {

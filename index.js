@@ -11,6 +11,10 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 
+function roundTo(x) {
+  return Number.parseFloat(x).toFixed(2);
+}
+
 // Define the tables for each year
 const YearTables = {
   1989: scfp1989,
@@ -76,6 +80,7 @@ app.get("/api/survey", async (req, res) => {
             return acc + entry.dataValues.WGT;
           }, 0);
 
+          // weightedMean = roundTo(totalVWGT / totalWGT);
           weightedMean = totalVWGT / totalWGT;
         }
 
@@ -85,6 +90,8 @@ app.get("/api/survey", async (req, res) => {
           [`${selectedDataName}-${selectedDistributionName}-${selectedDisplayName}`]:
             weightedMean,
         };
+
+        console.log(dataObject)
 
         results.push(dataObject);
       }
