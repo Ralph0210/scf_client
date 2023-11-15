@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./models");
-const { scfp2019, scfp2016, scfp2013, scfp2010, scfp2007, scfp2004, scfp2001, scfp1998, scfp1995, scfp1992, scfp1989 } = require("./models"); // Import your Sequelize models
+const {scfp2022, scfp2019, scfp2016, scfp2013, scfp2010, scfp2007, scfp2004, scfp2001, scfp1998, scfp1995, scfp1992, scfp1989 } = require("./models"); // Import your Sequelize models
 require("dotenv").config();
 const path = require('path')
 
@@ -24,6 +24,7 @@ const YearTables = {
   2013: scfp2013,
   2016: scfp2016,
   2019: scfp2019,
+  2022: scfp2022,
 };
 
 app.get("/api/survey", async (req, res) => {

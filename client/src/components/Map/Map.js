@@ -7,7 +7,7 @@ import E3 from '../ExploreData/E3'
 import Footer from '../Footer/Footer';
 import DataInfoCard from '../DataInfoCard/DataInfoCard';
 
-const Map = ({distinctVariables}) => {
+const Map = ({distinctVariables,dataSelections, setDataSelections}) => {
   const [shouldRenderDataInfoCard, setShouldRenderDataInfoCard] =
     useState(false);
     const [selectedInfoData, setSelectedInfoData] = useState(null);
@@ -25,7 +25,7 @@ const Map = ({distinctVariables}) => {
       <Alert />
       {/* <ExploreData distinctVariables={distinctVariables} setSelectedInfoData={setSelectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard}/> */}
       <E3  distinctVariables={distinctVariables} setSelectedInfoData={setSelectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard}/>
-      {shouldRenderDataInfoCard && <DataInfoCard data={selectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard}/>}
+      {shouldRenderDataInfoCard && <DataInfoCard data={selectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard} dataSelections={dataSelections} setDataSelections={setDataSelections}/>}
     </div>
   );
 };

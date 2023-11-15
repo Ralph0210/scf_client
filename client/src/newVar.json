@@ -1,5 +1,6 @@
 {
-  "name": "SCF",
+  "name": "Start Here",
+  "description": "Explore from here",
   "children": [
     {
       "name": "Demographics",
