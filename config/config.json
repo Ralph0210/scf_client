@@ -2,7 +2,7 @@
   "development": {
     "username": "ralph",
     "password": "Yuhuan0210!",
-    "database": "scf",
+    "database": "scf_2022",
     "host": "testingscf.mysql.database.azure.com",
     "dialect": "mysql"
   },

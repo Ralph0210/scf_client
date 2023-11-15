@@ -1,43 +1,51 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import * as d3 from "d3";
 import "./ExploreData.css";
-import { INITIAL_VALUE, ReactSVGPanZoom, TOOL_AUTO, TOOL_NONE } from "react-svg-pan-zoom";
+import {
+  INITIAL_VALUE,
+  ReactSVGPanZoom,
+  TOOL_AUTO,
+  TOOL_NONE,
+} from "react-svg-pan-zoom";
 // import data from './flare-2.json'
 // import data from "./var.json";
 // import data from './var3.json'
-import data from '../../newVar.json'
+import data from "../../newVar.json";
 // import data from './var2.json'
 import DataInfoCard from "../DataInfoCard/DataInfoCard";
 // import useWindowSize from "../useWindowSize";
 import styles from "./ExploreData.module.css";
-import {useWindowSize} from '@react-hook/window-size'
+import { useWindowSize } from "@react-hook/window-size";
 
-
-
-const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinctVariables}) => {
-  
-    const [width, height] = useWindowSize({initialWidth: 400, initialHeight: 400})
+const ExploreData = ({
+  setSelectedInfoData,
+  setShouldRenderDataInfoCard,
+  distinctVariables,
+}) => {
+  const [width, height] = useWindowSize({
+    initialWidth: 400,
+    initialHeight: 400,
+  });
   // const [data] = useState([25, 50, 35, 15, 94, 50]);
   const Viewer = useRef(null);
   const [tool, setTool] = useState(TOOL_AUTO);
   const [value, setValue] = useState(INITIAL_VALUE);
   const svgRef = useRef();
   const svgRef2 = useRef();
-  const clickedNode = useRef()
+  const clickedNode = useRef();
   const [selectedNode, setSelectedNode] = useState(null);
+  const [showLabels, setShowLabels] = useState(true);
 
   useEffect(() => {
-
     const handleNodeClick = (d, i) => {
       console.log(d, i);
       setShouldRenderDataInfoCard(true);
       setSelectedInfoData(i.data);
+      // setSelectedNode(i);
     };
 
-    const old = d3.select(svgRef2.current)
-    old
-      .selectAll('*')
-      .remove()
+    const old = d3.select(svgRef2.current);
+    old.selectAll("*").remove();
 
     // const width = size.width === undefined? window.innerWidth : size.width;
     // const height =  height === undefined? window.innerHeight : height;
@@ -57,20 +65,20 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
       d3.hierarchy(data).sort((a, b) => d3.ascending(a.data.name, b.data.name))
     );
 
-      // Creates the SVG container.
-  const svg = d3
-  .select(svgRef2.current)
-  .attr("width", width)
-  .attr("height", width)
-  // .classed("svg-container", true)
-  // .attr("preserveAspectRatio", "xMinYMin meet")
-  .attr("viewBox", [-cx, -cy, width, width])
-  // .classed("svg-content-responsive", true)
-  .attr(
-    "style",
-    `width: ${width}px; height: ${width}px; font: 10px sans-serif;`
-  )
-  .attr("class", "mapsvg");
+    // Creates the SVG container.
+    const svg = d3
+      .select(svgRef2.current)
+      .attr("width", width)
+      .attr("height", width)
+      // .classed("svg-container", true)
+      // .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", [-cx, -cy, width, width])
+      // .classed("svg-content-responsive", true)
+      .attr(
+        "style",
+        `width: ${width}px; height: ${width}px; font: 10px sans-serif;`
+      )
+      .attr("class", "mapsvg");
 
     // Append links.
     let links = svg
@@ -103,9 +111,9 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         "transform",
         (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
       )
-      .attr("class", d => {
+      .attr("class", (d) => {
         if (d.depth === 0) {
-          return "root-circle"
+          return "root-circle";
         }
         // Check if the node is at depth 1 and has the name "Demographics"
         if (d.depth === 1 && d.data.name === "Demographics") {
@@ -113,7 +121,11 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         }
 
         // Check if the node is at depth 2 under "Demographics"
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Demographics") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Demographics"
+        ) {
           return "demo-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
@@ -123,30 +135,42 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         // }
 
         if (d.depth === 1 && d.data.name === "Financial Assets") {
-          return "fin-circle"
+          return "fin-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Financial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Financial Assets"
+        ) {
           return "fin-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
         if (d.depth === 1 && d.data.name === "Income and Earnings") {
-          return "In-circle"
+          return "In-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Income and Earnings") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Income and Earnings"
+        ) {
           return "In-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Nonfinancial Assets") {
-          return "non-circle"
+          return "non-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Nonfinancial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Nonfinancial Assets"
+        ) {
           return "non-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Debt") {
-          return "labor-circle"
+          return "labor-circle";
         }
 
         if (d.depth === 2 && d.parent && d.parent.data.name === "Debt") {
@@ -159,7 +183,7 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
 
         return "normal-circle"; // Default fill color for other nodes
       })
-      .attr("r", 0)
+      .attr("r", 0);
 
     let nodeAnimation = svg
       .append("g")
@@ -174,9 +198,9 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         "transform",
         (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
       )
-      .attr("class", d => {
+      .attr("class", (d) => {
         if (d.depth === 0) {
-          return "root-circle"
+          return "root-circle";
         }
         // Check if the node is at depth 1 and has the name "Demographics"
         if (d.depth === 1 && d.data.name === "Demographics") {
@@ -184,39 +208,59 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         }
 
         // Check if the node is at depth 2 under "Demographics"
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Demographics") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Demographics"
+        ) {
           return "demo-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         // Check if the node is at depth 2 under "Demographics"
-        if (d.depth === 3 && d.parent && d.parent.parent.data.name === "Demographics") {
+        if (
+          d.depth === 3 &&
+          d.parent &&
+          d.parent.parent.data.name === "Demographics"
+        ) {
           return "demo-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Financial Assets") {
-          return "fin-circle"
+          return "fin-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Financial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Financial Assets"
+        ) {
           return "fin-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
         if (d.depth === 1 && d.data.name === "Income and Earnings") {
-          return "In-circle"
+          return "In-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Income and Earnings") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Income and Earnings"
+        ) {
           return "In-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
         if (d.depth === 1 && d.data.name === "Nonfinancial Assets") {
-          return "non-circle"
+          return "non-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Nonfinancial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Nonfinancial Assets"
+        ) {
           return "non-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Debt") {
-          return "labor-circle"
+          return "labor-circle";
         }
 
         if (d.depth === 2 && d.parent && d.parent.data.name === "Debt") {
@@ -229,9 +273,9 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
 
         return "normal-circle"; // Default fill color for other nodes
       })
-      .attr("r", 0)
+      .attr("r", 0);
 
-      let highLightNode = svg
+    let highLightNode = svg
       .append("g")
       .selectAll()
       .data(root.descendants())
@@ -244,19 +288,19 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         "transform",
         (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
       )
-      .attr("class", d => {
+      .attr("class", (d) => {
         // if (d.depth === 0) {
         //   return "root-circle"
         // }
         const isNodeInDistinctVariables = distinctVariables.has(d.data.value);
         // console.log(isNodeInDistinctVariables, "isNode")
-    
+
         if (isNodeInDistinctVariables) {
           return "red-circle"; // Apply a red fill color to nodes in distinctVariables
         }
       })
       .attr("r", 15)
-      .attr("fill", "none")
+      .attr("fill", "none");
 
     // Append nodes.
     let nodes = svg
@@ -268,9 +312,9 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         "transform",
         (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
       )
-      .attr("class", d => {
+      .attr("class", (d) => {
         if (d.depth === 0) {
-          return "root-circle"
+          return "root-circle";
         }
 
         // Check if the node is at depth 1 and has the name "Demographics"
@@ -279,41 +323,61 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
         }
 
         // Check if the node is at depth 2 under "Demographics"
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Demographics") {
-            return "demo-circle";
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Demographics"
+        ) {
+          return "demo-circle";
         }
 
         // Check if the node is at depth 2 under "Demographics"
-        if (d.depth === 3 && d.parent && d.parent.parent.data.name === "Demographics") {
+        if (
+          d.depth === 3 &&
+          d.parent &&
+          d.parent.parent.data.name === "Demographics"
+        ) {
           return "demo-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Financial Assets") {
-          return "fin-circle"
+          return "fin-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Financial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Financial Assets"
+        ) {
           return "fin-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Income and Earnings") {
-          return "In-circle"
+          return "In-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Income and Earnings") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Income and Earnings"
+        ) {
           return "In-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Nonfinancial Assets") {
-          return "non-circle"
+          return "non-circle";
         }
 
-        if (d.depth === 2 && d.parent && d.parent.data.name === "Nonfinancial Assets") {
+        if (
+          d.depth === 2 &&
+          d.parent &&
+          d.parent.data.name === "Nonfinancial Assets"
+        ) {
           return "non-circle"; // Apply "blue" fill color to children nodes of "Demographics"
         }
 
         if (d.depth === 1 && d.data.name === "Debt") {
-          return "labor-circle"
+          return "labor-circle";
         }
 
         if (d.depth === 2 && d.parent && d.parent.data.name === "Debt") {
@@ -328,121 +392,71 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
       })
       .attr("r", 10);
 
-
-      // Append labels.
+    // Append labels.
     let labels = svg
-    .append("g")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-width", 3)
-    .selectAll()
-    .data(root.descendants())
-    .join("text")
-    .attr(
-      "transform",
-      (d) =>
-        `rotate(${(d.x * 180) / Math.PI - 90})
+      .append("g")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-width", 3)
+      .selectAll()
+      .data(root.descendants())
+      .join("text")
+      .attr(
+        "transform",
+        (d) =>
+          `rotate(${(d.x * 180) / Math.PI - 90})
         translate(${d.y},0)
         rotate(${-(d.x * 180) / Math.PI + 90})`
-    )
-    .attr("dy", "0.31em")
-    .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
-    .attr("text-anchor", (d) =>
-      d.x < Math.PI === !d.children ? "start" : "end"
-    )
-    .attr("paint-order", "stroke")
-    .attr("stroke", "white")
-    .attr("fill", "currentColor")
+      )
+      .attr("dy", "0.31em")
+      .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
+      .attr("text-anchor", (d) =>
+        d.x < Math.PI === !d.children ? "start" : "end"
+      )
+      .attr("paint-order", "stroke")
+      .attr("stroke", "white")
+      .attr("fill", "currentColor")
 
-    .text((d) => d.data.name)
-    .style("opacity", 0); // Initially set text opacity to 0
+      .text((d) => d.data.name)
+      .style("opacity", (d) => (d.depth === 0 ? 1 : 0));
 
-    nodes.on("click", function (d, i) {
-      
-      if (d.depth === 1) {
-        // If the clicked node has depth 1, update the selected node
-        setSelectedNode(selectedNode === i ? null : i);
-        console.log(selectedNode)
-      } else {
-        // If the clicked node has depth other than 1, reset the selected node
-        setSelectedNode(null);
-      }
-      if(selectedNode){
-        const myLabelSelection = d3.selectAll(".node").filter(d => d.data.name === selectedNode.data.name);
-    const descendants = myLabelSelection.datum().descendants();
-    descendants.attr('opacity', 0)
-      }
-      
-    })
+    // nodes.on("click", function (d, i) {
+
+    //   if (d.depth === 1) {
+    //     // If the clicked node has depth 1, update the selected node
+    //     setSelectedNode(selectedNode === i ? null : i);
+    //     console.log(selectedNode)
+    //   } else {
+    //     // If the clicked node has depth other than 1, reset the selected node
+    //     setSelectedNode(null);
+    //   }
+    //   if(selectedNode){
+    //     const myLabelSelection = d3.selectAll(".node").filter(d => d.data.name === selectedNode.data.name);
+    // const descendants = myLabelSelection.datum().descendants();
+    // descendants.attr('opacity', 0)
+    //   }
+
+    // })
 
     // Define mouseover and mouseout event handlers for nodes
     nodes
-      .on("click", function(d, i) {
-        const past = clickedNode.current
-        clickedNode.current = i
-        handleNodeClick(d, i)
+      .on("click", function (d, i) {
+        console.log(i, "click");
+
+        const past = clickedNode.current;
+        clickedNode.current = i;
+        // handleNodeClick(d, i);
 
         const centerX = d.x - cx;
         const centerY = d.y - cy;
 
-        console.log(d, i, d.x, d.y, i.x, i.y, cx, cy)
+        console.log(d, i, d.x, d.y, i.x, i.y, cx, cy);
 
-        svg.transition()
+        svg
+          .transition()
           .duration(800)
-          .attr("transform", `translate(${cx-(width/2)}, ${cy})`);
+          .attr("transform", `translate(${cx - width / 2}, ${cy})`);
 
         nodeAnimation
-        .filter((data) => data.data === i.data) // Filter for the matching data point
-        .transition()
-        .duration(500)
-        .attr("r", 15)
-        .style("opacity", 0.5);
-
-      nodeAnimation2
-        .filter((data) => data.data === i.data) // Filter for the matching data point
-        .transition()
-        .duration(600)
-        .attr("r", 20)
-        .style("opacity", 0.3);
-
-      // Change the opacity of the associated text to 1
-      labels
-        .filter((textData) => textData.data.name === i.data.name) // Filter for the matching text element
-        .transition()
-        .duration(800)
-        .attr("x", (d) => (d.x < Math.PI === !d.children ? 20 : -20))
-        .style("opacity", 1);
-
-        if(past && past !== clickedNode.current){
-          nodeAnimation
-          .filter((data) => data.data === past.data) // Filter for the matching data point
-          .transition()
-          .duration(600)
-          .attr("r", 0)
-          .style("opacity", 0.5);
-
-        nodeAnimation2
-          .filter((data) => data.data === past.data) // Filter for the matching data point
-          .transition()
-          .duration(600)
-          .attr("r", 0)
-          .style("opacity", 0.5);
-
-        // Change the opacity of the associated text back to 0
-        labels
-          .filter((textData) => textData.data.name === past.data.name) // Filter for the matching text element
-          .transition()
-          .duration(800)
-          .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
-          .style("opacity", 0);
-        }
-      })
-
-      .on("mouseover", function (d, i) {
-        // console.log("Mouseover Event - Data:", d, "Index:", i, "description:", i.data.description);
-        // Change the circle size
-
-        if(clickedNode.current !== i){
-          nodeAnimation
           .filter((data) => data.data === i.data) // Filter for the matching data point
           .transition()
           .duration(500)
@@ -463,75 +477,156 @@ const ExploreData = ({setSelectedInfoData, setShouldRenderDataInfoCard, distinct
           .duration(800)
           .attr("x", (d) => (d.x < Math.PI === !d.children ? 20 : -20))
           .style("opacity", 1);
-        }
 
-      })
-      .on("mouseout", function (d, i) {
-        if(clickedNode.current !== i){
-          nodeAnimation
-          .filter((data) => data.data === i.data) // Filter for the matching data point
-          .transition()
-          .duration(600)
-          .attr("r", 0)
-          .style("opacity", 0.5);
-
-        nodeAnimation2
-          .filter((data) => data.data === i.data) // Filter for the matching data point
-          .transition()
-          .duration(600)
-          .attr("r", 0)
-          .style("opacity", 0.5);
-
-        // Change the opacity of the associated text back to 0
-        labels
-          .filter((textData) => textData.data.name === i.data.name) // Filter for the matching text element
+        const childrenLabels = labels
+          .filter((textData) => textData.parent === i)
           .transition()
           .duration(800)
-          .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
-          .style("opacity", 0);
+          .style("opacity", 1);
+
+        if (past && past !== clickedNode.current) {
+          nodeAnimation
+            .filter((data) => data.data === past.data) // Filter for the matching data point
+            .transition()
+            .duration(600)
+            .attr("r", 0)
+            .style("opacity", 0.5);
+
+          nodeAnimation2
+            .filter((data) => data.data === past.data) // Filter for the matching data point
+            .transition()
+            .duration(600)
+            .attr("r", 0)
+            .style("opacity", 0.5);
+
+          // Change the opacity of the associated text back to 0
+
+          labels
+            .filter(
+              (textData) =>
+                textData.parent !== clickedNode.current && // Nodes that are not the parent of the clicked node
+                textData.data.name !== clickedNode.current.data.name // Exclude the clicked node itself
+              // textData.data.name === past.data.name // Include the past clicked node
+            )
+            .transition()
+            .duration(800)
+            .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
+            .style("opacity", 0);
+        }
+      })
+
+      .on("mouseover", function (d, i) {
+        // console.log("Mouseover Event - Data:", d, "Index:", i, "description:", i.data.description);
+        // Change the circle size
+
+        if (clickedNode.current !== i) {
+          handleNodeClick(d, i);
+          nodeAnimation
+            .filter((data) => data.data === i.data) // Filter for the matching data point
+            .transition()
+            .duration(500)
+            .attr("r", 15)
+            .style("opacity", 0.5);
+
+          nodeAnimation2
+            .filter((data) => data.data === i.data) // Filter for the matching data point
+            .transition()
+            .duration(600)
+            .attr("r", 20)
+            .style("opacity", 0.3);
+
+          // Change the opacity of the associated text to 1
+          labels
+            .filter((textData) => textData.data.name === i.data.name) // Filter for the matching text element
+            .transition()
+            .duration(800)
+            .attr("x", (d) => (d.x < Math.PI === !d.children ? 20 : -20))
+            .style("opacity", 1);
+        }
+      })
+      .on("mouseout", function (d, i) {
+        // console.log(i.parent.data.name);
+        console.log(clickedNode, "selectedNode");
+        const isImmediateChild =
+          clickedNode &&
+          clickedNode.current &&
+          i.parent &&
+          i.parent.data &&
+          i.parent.data.name === clickedNode.current.data.name;
+        console.log(isImmediateChild, "is or not is");
+        if (clickedNode.current !== i) {
+          // handleNodeClick(d, clickedNode);
+          nodeAnimation
+            .filter((data) => data.data === i.data) // Filter for the matching data point
+            .transition()
+            .duration(600)
+            .attr("r", 0)
+            .style("opacity", 0.5);
+
+          nodeAnimation2
+            .filter((data) => data.data === i.data) // Filter for the matching data point
+            .transition()
+            .duration(600)
+            .attr("r", 0)
+            .style("opacity", 0.5);
+
+          labels
+            .filter((textData) => textData.data.name === i.data.name) // Filter for the matching text element
+            .transition()
+            .duration(800)
+            .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10));
+
+          if (clickedNode.current !== i && !isImmediateChild) {
+            
+            // Change the opacity of the associated text back to 0
+            labels
+              .filter((textData) => textData.data.name === i.data.name) // Filter for the matching text element
+              .transition()
+              .duration(800)
+              .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
+              .style("opacity", 0);
+          }
         }
         // Change the circle size back to its original size
-       
       });
-      
-      svg.attr('transform', `translate(${cx-(width/2)}, ${cy})`);
-  }, [width, height, selectedNode]);
 
+    svg.attr("transform", `translate(${cx - width / 2}, ${cy})`);
+  }, [width, height, selectedNode]);
 
   return (
     <>
-    <div className="pan_container">
-      <ReactSVGPanZoom
-        ref={Viewer}
-        background="rgba(217, 217, 217, 0.20)"
-        defaultTool="pan"
-        width={width}
-        height={width}
-        tool={tool}
-        onChangeTool={setTool}
-        value={value}
-        onChangeValue={setValue}
-        detectAutoPan={false}
-        toolbarProps={{
-          position: "none", // Set position to "none" to hide the toolbar
-        }}
-        miniatureProps={{
-          position: "none", // Set position to "none" to hide the miniature
-        }}
-        // className="map_parent_container"
-      >
-        <svg>
-          <g ref={svgRef2}></g>
-        </svg>
-      </ReactSVGPanZoom>
-    </div>
+      <div className="pan_container">
+        <ReactSVGPanZoom
+          ref={Viewer}
+          background="rgba(217, 217, 217, 0.20)"
+          defaultTool="pan"
+          width={width}
+          height={width}
+          tool={tool}
+          onChangeTool={setTool}
+          value={value}
+          onChangeValue={setValue}
+          detectWheel={false}
+          detectAutoPan={false}
+          detectPinchGesture={true}
+          toolbarProps={{
+            position: "none", // Set position to "none" to hide the toolbar
+          }}
+          miniatureProps={{
+            position: "none", // Set position to "none" to hide the miniature
+          }}
+          // className="map_parent_container"
+        >
+          <svg>
+            <g ref={svgRef2}></g>
+          </svg>
+        </ReactSVGPanZoom>
+      </div>
     </>
   );
 };
 
 export default ExploreData;
-
-
 
 // import {useWindowSize} from '@react-hook/window-size'
 
@@ -540,7 +635,7 @@ export default ExploreData;
 //     const [tool, onChangeTool] = useState(TOOL_NONE);
 //     const [value, onChangeValue] = useState(INITIAL_VALUE);
 //     const [width, height] = useWindowSize({ initialWidth: 400, initialHeight: 400 });
-  
+
 //     return (
 //       <div style={{ width: '80%', height: '100%' }}>
 //         <ReactSVGPanZoom
@@ -564,5 +659,5 @@ export default ExploreData;
 //       </div>
 //     );
 //   };
-  
+
 //   export default Resizable;

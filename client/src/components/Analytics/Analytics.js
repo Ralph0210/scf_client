@@ -1,5 +1,5 @@
 import React from "react";
-import FileSaver from "file-saver";
+import FileSaver, {saveAs} from "file-saver";
 import "./Analytics.css";
 import {
   LineChart,
@@ -29,22 +29,18 @@ const getRandomColor = () => {
   return `hsl(${hue}, 70%, 50%)`;
 };
 
-const Analytics = () => {
-    // useCurrentPng usage (isLoading is optional)
-    // const [getPng, { lineCharRef, isLoading }] = useCurrentPng();
+const Analytics = ({dataSelections, setDataSelections}) => {
+  const referenceToSvgChart = useRef();
+  const handleAreaDownload = () => {
+    const element = referenceToSvgChart.current.container
 
-    // Can also pass in options for html2canvas
-    // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
-  
-    // const handleDownload = useCallback(async () => {
-    //   const png = await getPng();
-  
-    //   // Verify that png is not undefined
-    //   if (png) {
-    //     // Download with FileSaver
-    //     FileSaver.saveAs(png, 'myChart.png');
-    //   }
-    // }, [getPng]);
+    const svgURL = new XMLSerializer().serializeToString(element);
+    const svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
+    
+    saveAs(svgBlob,"Hello.svg");
+
+  }
+
 
   const [toggleSecondaryDistribution, setToggleSecondaryDistribution] = useState(false)
   const [lines, setLines] = useState([]);
@@ -71,18 +67,18 @@ const Analytics = () => {
     ],
   ]);
 
-  const [dataSelections, setDataSelections] = useState([
-    {
-      selectedData: "INCOME",
-      selectedDataName: "Household Income",
-      selectedDistributionName: "Age",
-      selectedDistribution: "AGECL",
-      secondarySelectedDistribution: "None",
-      secondarySelectedDistributionName: "None",
-      selectedDisplay: [{ label: "35 <", value: 1 }],
-      secondarySelectedDisplay: [{ label: "None", value: "None" }],
-    },
-  ]);
+  // const [dataSelections, setDataSelections] = useState([
+  //   {
+  //     selectedData: "INCOME",
+  //     selectedDataName: "Household Income",
+  //     selectedDistributionName: "Age",
+  //     selectedDistribution: "AGECL",
+  //     secondarySelectedDistribution: "None",
+  //     secondarySelectedDistributionName: "None",
+  //     selectedDisplay: [{ label: "35 <", value: 1 }],
+  //     secondarySelectedDisplay: [{ label: "None", value: "None" }],
+  //   },
+  // ]);
 
   console.log(dataSelections, 'dataSelections')
 
@@ -90,7 +86,7 @@ const Analytics = () => {
   const [dataForGraphing, setDataForGraphing] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("Mean"); // Set initial selected option
 
-  const [value, setValue] = useState([1989, 2019]);
+  const [value, setValue] = useState([1989, 2022]);
   // console.log(data, 'data')
 
   useEffect(() => {
@@ -354,12 +350,18 @@ const Analytics = () => {
             />
           </div>
         </div>
+
+        <div className="export_container">
+        <label htmlFor="year_range">Export</label>
+        <div onClick={() => handleAreaDownload()}>download</div>
+        </div>
       </div>
 
       <h3 className="chart_title">{dataSelections[0].selectedDataName} by {dataSelections[0].selectedDistributionName} {dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}</h3>
 
       {lines && (<ResponsiveContainer width="90%" height={400}>
       <LineChart
+      ref={referenceToSvgChart}
         data={dataForGraphing}
         margin={{
           top: 20,
@@ -367,10 +369,10 @@ const Analytics = () => {
           left: 65,
           bottom: 0,
         }}
-        // ref={lineCharRef}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year">
+        
         <Label value="year" offset={-10} position="insideBottomLeft" />
         </XAxis>
         <YAxis>

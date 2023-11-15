@@ -47,7 +47,7 @@ const YearRangeSelection = (props) => {
     // thumbClassName="example-thumb"
     // trackClassName="example-track"
     // renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-    max={2019} min={1989} step={3} minDistance={3} defaultValue={[1989, 2019]} renderTrack={Track} renderThumb={Thumb}
+    max={2022} min={1989} step={3} minDistance={3} defaultValue={[1989, 2022]} renderTrack={Track} renderThumb={Thumb}
 />
     </div>
   )
