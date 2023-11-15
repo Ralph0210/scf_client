@@ -11,10 +11,6 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 
-function roundTo(x) {
-  return Number.parseFloat(x).toFixed(2);
-}
-
 // Define the tables for each year
 const YearTables = {
   1989: scfp1989,
@@ -39,7 +35,11 @@ app.get("/api/survey", async (req, res) => {
     selectedUnit,
     selectedDataName,
     selectedDistributionName,
-    selectedDisplayName
+    selectedDisplayName,
+    secondarySelectedDistribution,
+    secondarySelectedDistributionName,
+    secondarySelectedDisplay,
+    secondarySelectedDisplayName,
   } = req.query;
 
   try {
@@ -61,41 +61,129 @@ app.get("/api/survey", async (req, res) => {
         if (selectedDistribution !== "None") {
           whereClause[selectedDistribution] = selectedDisplay;
         }
-        console.log(whereClause);
+
+        if (secondarySelectedDistribution!== "None") {
+          // whereClause[secondarySelectedDistribution] = secondarySelectedDisplay;
+          whereClause[secondarySelectedDistribution] = secondarySelectedDisplay;
+        }
+        console.log("whereclause", whereClause, "whereClause");
 
         const surveyData = await YearTables[year].findAll({
           where: whereClause,
           attributes: [selectedData, "WGT"],
-        });
-        console.log(whereClause);
+        })
 
-        // Calculate the weighted mean if selectedUnit is "Mean"
-        let weightedMean = null;
-        if (selectedUnit === "Mean") {
-          const totalVWGT = surveyData.reduce((acc, entry) => {
-            return acc + entry.dataValues[selectedData] * entry.dataValues.WGT;
-          }, 0);
+            // Calculate the statistic based on selectedUnit
+            let statistic = null;
+            const totalWGT = surveyData.reduce((acc, entry) => acc + entry.dataValues.WGT, 0);
+            if (selectedUnit === "Mean") {
+              const totalVWGT = surveyData.reduce((acc, entry) => acc + entry.dataValues[selectedData] * entry.dataValues.WGT, 0);
+             
+              statistic = totalVWGT / totalWGT;
+            } else if (selectedUnit === "Median") {
+              // Calculate the weighted median if selectedUnit is "Median"
+              const sortedEntries = surveyData
+                .map(entry => ({ value: entry.dataValues[selectedData], weight: entry.dataValues.WGT }))
+                .sort((a, b) => a.value - b.value);
+            
+              let accumulatedWeight = 0;
+              let targetWeight = totalWGT / 2; // For median, use totalWGT / 2 as the target weight
+            
+              for (const entry of sortedEntries) {
+                accumulatedWeight += entry.weight;
+                if (accumulatedWeight >= targetWeight) {
+                  // Found the median element
+                  statistic = entry.value;
+                  break;
+                }
+              }
+            }else if (selectedUnit === "Log Mean") {
+              // Calculate the weighted logarithmic mean if selectedUnit is "Log Mean"
+              const logValues = surveyData.map(entry => ({ logValue: Math.log(entry.dataValues[selectedData]), weight: entry.dataValues.WGT }));
+              const totalWeightedLog = logValues.reduce((acc, { logValue, weight }) => acc + logValue * weight, 0);
+              const totalWeight = logValues.reduce((acc, { weight }) => acc + weight, 0);
+              console.log(totalWeight)
+              statistic = totalWeightedLog / totalWeight;
+            } else if (selectedUnit === "Log Median") {
+              // Calculate the weighted logarithmic median if selectedUnit is "Log Median"
+              const sortedEntries = surveyData
+                .map(entry => ({ logValue: Math.log(entry.dataValues[selectedData]), weight: entry.dataValues.WGT }))
+                .sort((a, b) => a.logValue - b.logValue);
+            
+              let accumulatedWeight = 0;
+              let targetWeight = totalWGT / 2; // For median, use totalWeight / 2 as the target weight
+            
+              for (const entry of sortedEntries) {
+                accumulatedWeight += entry.weight;
+                if (accumulatedWeight >= targetWeight) {
+                  // Found the median element
+                  statistic = entry.logValue;
+                  break;
+                }
+              }
+            }
 
-          const totalWGT = surveyData.reduce((acc, entry) => {
-            return acc + entry.dataValues.WGT;
-          }, 0);
-
-          // weightedMean = roundTo(totalVWGT / totalWGT);
-          weightedMean = totalVWGT / totalWGT;
-        }
-
-        // Build the desired structure for the data
         const dataObject = {
           year: year,
-          [`${selectedDataName}-${selectedDistributionName}-${selectedDisplayName}`]:
-            weightedMean,
         };
+        
+        if (secondarySelectedDisplayName !== "None") {
+          // Include the property only if secondarySelectedDisplayName is not "None"
+          dataObject[`${selectedDistributionName} ${selectedDisplayName} ${secondarySelectedDisplayName}`] = statistic;
+        } else{
+          dataObject[`${selectedDistributionName} ${selectedDisplayName} `] = statistic;
+        }
 
-        console.log(dataObject)
+        console.log("dataobjecct", dataObject, 'dataObject')
 
         results.push(dataObject);
       }
     }
+
+    // for (let year = parseInt(startYear); year <= parseInt(endYear); year++) {
+    //   if (YearTables[year]) {
+    //     const dataObject = {
+    //       year: year,
+    //     };
+    
+    //     for (const primaryOption of selectedDistribution.split(',')) {
+    //       // Iterate through secondary distribution selections
+    //       for (const secondaryOption of secondarySelectedDistribution.split(',')) {
+    //         const whereClause = {
+    //           [selectedDistribution]: selectedDisplay,
+    //           [secondarySelectedDistribution]: secondarySelectedDisplay,
+    //         };
+    
+    //         // Fetch data from Sequelize model
+    //         const surveyData = await YearTables[year].findAll({
+    //           where: whereClause,
+    //           attributes: [selectedData, "WGT"],
+    //         });
+    
+    //         // Calculate the weighted mean if selectedUnit is "Mean"
+    //         let weightedMean = null;
+    //         if (selectedUnit === "Mean") {
+    //           const totalVWGT = surveyData.reduce((acc, entry) => {
+    //             return acc + entry.dataValues[selectedData] * entry.dataValues.WGT;
+    //           }, 0);
+    
+    //           const totalWGT = surveyData.reduce((acc, entry) => {
+    //             return acc + entry.dataValues.WGT;
+    //           }, 0);
+    
+    //           weightedMean = totalVWGT / totalWGT;
+    //         }
+    
+    //         // Add the result to the dataObject
+    //         const resultKey = `${primaryOption} ${secondaryOption}`;
+    //         dataObject[resultKey] = weightedMean;
+    //       }
+    //     }
+    
+    //     console.log("dataObject", dataObject);
+    //     results.push(dataObject);
+    //   }
+    // }
 
     // Combine the results from each year and send them as a single response
     const combinedResults = results.flat();
@@ -159,7 +247,7 @@ app.get("/distinct-values", async (req, res) => {
 
           if (AGECL === 1) {
             // When AGECL is 1, return "< 35" as the label and 1 as the value
-            return { label: "35 <", value: 1 };
+            return { label: "less than 35", value: 1 };
           } else if (AGECL === 2) {
             // When AGECL is 2, return "35-44" as the label and 2 as the value
             return { label: "35-44", value: 2 };
@@ -174,7 +262,7 @@ app.get("/distinct-values", async (req, res) => {
             return { label: "65-74", value: 5 };
           } else if (AGECL === 6) {
             // When AGECL is 6, return "75+" as the label and 6 as the value
-            return { label: "75+", value: 6 };
+            return { label: "75 or older", value: 6 };
           }
           
           return { label: value, value: value };

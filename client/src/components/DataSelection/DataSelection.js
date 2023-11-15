@@ -50,7 +50,7 @@ const DataSelection = ({
     <div className='data_container'>
       <label>Data</label>
       {dataSelections.map((data, index) => (
-        <div key={index}>
+        <div key={index} className='data_selection'>
           <select
             id={`Data_${index}`}
             className='Data'
@@ -75,9 +75,11 @@ const DataSelection = ({
               </optgroup>
             ))}
           </select>
+          <div className='connection'></div>
         </div>
+        
       ))}
-      <p onClick={handleAddition} className='additionButton'>+</p>
+      {/* <p onClick={handleAddition} className='additionButton'>+</p> */}
     </div>
   );
 };

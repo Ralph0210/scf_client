@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: baseURL,
 });
 
-export async function retrieve(selectedYear, selectedData, selectedDistribution, selectedDisplay, selectedUnit, selectedDataName, selectedDistributionName, selectedDisplayName) {
+export async function retrieve(selectedYear, selectedData, selectedDistribution, selectedDisplay, selectedUnit, selectedDataName, selectedDistributionName, selectedDisplayName, secondarySelectedDistribution, secondarySelectedDistributionName, secondarySelectedDisplay, secondarySelectedDisplayName) {
   try {
     const queryParams = {
       selectedYear: selectedYear,
@@ -18,8 +18,14 @@ export async function retrieve(selectedYear, selectedData, selectedDistribution,
       selectedUnit: selectedUnit,
       selectedDataName: selectedDataName,
       selectedDistributionName: selectedDistributionName,
-      selectedDisplayName: selectedDisplayName
+      selectedDisplayName: selectedDisplayName,
+      secondarySelectedDistribution: secondarySelectedDistribution,
+      secondarySelectedDistributionName: secondarySelectedDistributionName,
+      secondarySelectedDisplay: secondarySelectedDisplay,
+      secondarySelectedDisplayName: secondarySelectedDisplayName
     };
+
+    console.log(queryParams, 'query')
 
     // Use the `params` option to include the query parameters and await the response
     const response = await api.get('/api/survey', {
@@ -27,7 +33,7 @@ export async function retrieve(selectedYear, selectedData, selectedDistribution,
     });
 
     // Return the data from the response
-    console.log(response.data)
+    console.log(response.data, 'response')
     return response.data;
   } catch (error) {
     console.error('Error in retrieve function:', error);

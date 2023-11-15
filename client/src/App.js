@@ -27,7 +27,7 @@ function App() {
         allVariables.add(variable);
       }
     }
-    console.log(allVariables)
+    // console.log(allVariables)
     setDistinctVariables(allVariables);
   };
 
@@ -48,7 +48,7 @@ function App() {
   }, [topics]);
 
   // console.log(topics, "global");
-  console.log(isDataLoaded, 'isDataLoaded', topics)
+  // console.log(isDataLoaded, 'isDataLoaded', topics)
 
   return (
     <div className="App">

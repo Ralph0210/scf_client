@@ -20,18 +20,38 @@ const UnitSelection = ({
             checked={selectedUnit === "Mean"}
             onChange={handleUnitChange}
           />
-          Mean
+          Mean($)
         </label>
 
-        {/* <label>
+        <label>
           <input
             type="radio"
             value="Median"
             checked={selectedUnit === "Median"}
             onChange={handleUnitChange}
           />
-          Median
-        </label> */}
+          Median($)
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="Log Mean"
+            checked={selectedUnit === "Log Mean"}
+            onChange={handleUnitChange}
+          />
+          Mean(Log$)
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="Log Median"
+            checked={selectedUnit === "Log Median"}
+            onChange={handleUnitChange}
+          />
+          Median(Log$)
+        </label>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import FileSaver from "file-saver";
 import "./Analytics.css";
 import {
   LineChart,
@@ -9,8 +10,9 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label
 } from "recharts";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import YearRangeSelection from "../YearRangeSelection/YearRangeSelection";
 import UnitSelection from "../UnitSelection/UnitSelection";
 import DataPipeline from "../DataPipeline/DataPipeline";
@@ -18,6 +20,7 @@ import { retrieve } from "../api";
 import DataSelection from "../DataSelection/DataSelection";
 import DistributionSelection from "../DistributionSelection/DistributionSelection";
 import DisplaySelection from "../DisplaySelection/DisplaySelection";
+import { useCurrentPng, useGenerateImage } from "recharts-to-png";
 
 const getRandomColor = () => {
   // Generate a random hue between 0 and 360
@@ -27,6 +30,23 @@ const getRandomColor = () => {
 };
 
 const Analytics = () => {
+    // useCurrentPng usage (isLoading is optional)
+    // const [getPng, { lineCharRef, isLoading }] = useCurrentPng();
+
+    // Can also pass in options for html2canvas
+    // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
+  
+    // const handleDownload = useCallback(async () => {
+    //   const png = await getPng();
+  
+    //   // Verify that png is not undefined
+    //   if (png) {
+    //     // Download with FileSaver
+    //     FileSaver.saveAs(png, 'myChart.png');
+    //   }
+    // }, [getPng]);
+
+  const [toggleSecondaryDistribution, setToggleSecondaryDistribution] = useState(false)
   const [lines, setLines] = useState([]);
   const [uniqueValues, setUniqueValues] = useState([
     [
@@ -41,15 +61,30 @@ const Analytics = () => {
       { label: "75+", value: 6 },
     ],
   ]);
+
+  const [secondaryUniqueValues, setSecondaryUniqueValues] = useState([
+    [
+      {
+        label: "None",
+        value: "None",
+      },
+    ],
+  ]);
+
   const [dataSelections, setDataSelections] = useState([
     {
       selectedData: "INCOME",
       selectedDataName: "Household Income",
       selectedDistributionName: "Age",
       selectedDistribution: "AGECL",
+      secondarySelectedDistribution: "None",
+      secondarySelectedDistributionName: "None",
       selectedDisplay: [{ label: "35 <", value: 1 }],
+      secondarySelectedDisplay: [{ label: "None", value: "None" }],
     },
   ]);
+
+  console.log(dataSelections, 'dataSelections')
 
   const [data, setData] = useState([]);
   const [dataForGraphing, setDataForGraphing] = useState([]);
@@ -74,35 +109,81 @@ const Analytics = () => {
           selectedUnit: selectedUnit,
           selectedDataName: dataSelection.selectedDataName,
           selectedDistributionName: dataSelection.selectedDistributionName,
+          secondarySelectedDistribution: dataSelection.secondarySelectedDistribution,
+          secondarySelectedDistributionName: dataSelection.secondarySelectedDistributionName,
+          secondarySelectedDisplay: dataSelection.secondarySelectedDisplay,
         };
+        console.log(apiParams,'api')
 
         // Loop through selectedDisplay values and fetch data for each
-        const retrievedData = await Promise.all(
-          dataSelection.selectedDisplay.map(async (displayValue, index) => {
-            const matchingDisplay = dataSelection.selectedDisplay.find(
-              (display) => display.value === displayValue.value
-            );
-            const data = await retrieve(
-              apiParams.selectedYear,
-              apiParams.selectedData,
-              apiParams.selectedDistribution,
-              displayValue.value, // Use the current displayValue from the map
-              apiParams.selectedUnit,
-              apiParams.selectedDataName,
-              apiParams.selectedDistributionName,
-              matchingDisplay.label // Use the current displayValue from the map
-            );
-            // Find the selectedDisplay object that matches the current displayValue.value
+        // const retrievedData = await Promise.all(
+        //   dataSelection.selectedDisplay.map(async (displayValue, index) => {
+        //     const matchingDisplay = dataSelection.selectedDisplay.find(
+        //       (display) => display.value === displayValue.value
+        //     );
+        //     const data = await retrieve(
+        //       apiParams.selectedYear,
+        //       apiParams.selectedData,
+        //       apiParams.selectedDistribution,
+        //       displayValue.value, // Use the current displayValue from the map
+        //       apiParams.selectedUnit,
+        //       apiParams.selectedDataName,
+        //       apiParams.selectedDistributionName,
+        //       matchingDisplay.label, // Use the current displayValue from the map
+        //       apiParams.secondarySelectedDistribution,
+        //       apiParams.secondarySelectedDistributionName,
+        //       // Pass secondarySelectedDisplay values to the retrieve function
+        //   apiParams.secondarySelectedDisplay.map(secondaryDisplay => secondaryDisplay.value),
+        //     );
+        //     // Find the selectedDisplay object that matches the current displayValue.value
 
-            return data;
+        //     return data;
+        //   })
+        // );
+
+        const retrievedData = await Promise.all(
+          dataSelection.selectedDisplay.map(async (primaryDisplayValue, primaryIndex) => {
+            const matchingPrimaryDisplay = dataSelection.selectedDisplay.find(
+              (display) => display.value === primaryDisplayValue.value
+            );
+        
+            const primaryData = await Promise.all(
+              dataSelection.secondarySelectedDisplay.map(async (secondaryDisplayValue, secondaryIndex) => {
+                const matchingSecondaryDisplay = dataSelection.secondarySelectedDisplay.find(
+                  (display) => display.value === secondaryDisplayValue.value
+                );
+        
+                const data = await retrieve(
+                  apiParams.selectedYear,
+                  apiParams.selectedData,
+                  apiParams.selectedDistribution,
+                  primaryDisplayValue.value, // Use the current primary display value
+                  apiParams.selectedUnit,
+                  apiParams.selectedDataName,
+                  apiParams.selectedDistributionName,
+                  matchingPrimaryDisplay.label, // Use the current primary display label
+                  apiParams.secondarySelectedDistribution,
+                  apiParams.secondarySelectedDistributionName,
+                  secondaryDisplayValue.value, // Use the current secondary display value
+                  matchingSecondaryDisplay.label // Use the current secondary display label
+                );
+        
+                return data;
+              })
+            );
+        
+            return primaryData;
           })
         );
+        
 
-        console.log(`Data for Item ${index}:`, retrievedData);
+        // console.log(`Data for Item ${index}:`, retrievedData);
         // Update the data state with the retrieved data for the specific item
         setData((prevData) => {
           const updatedData = [...prevData];
           updatedData[index] = retrievedData;
+          const mergedArray = [].concat(...updatedData[index]);
+          console.log(mergedArray, 'updatedData')
           return updatedData;
         });
       } catch (error) {
@@ -114,33 +195,63 @@ const Analytics = () => {
     dataSelections.forEach((dataSelection, index) => {
       fetchDataForItem(dataSelection, selectedUnit, value, index);
     });
-  }, [dataSelections, setData, setSelectedUnit, setValue, value]);
+  }, [dataSelections, setData, setSelectedUnit, setValue, value, selectedUnit]);
 
   // console.log("data", JSON.stringify(data))
 
-  function mergeDataByYear(data) {
+  // function mergeDataByYear(data) {
+  //   const mergedData = {};
+
+  //   data.forEach((dataArray) => {
+  //     dataArray.forEach((dataArray2) => {
+  //       dataArray2.forEach((item) => {
+  //         const year = item.year;
+  //         if (!mergedData[year]) {
+  //           mergedData[year] = {};
+  //         }
+  //         Object.keys(item).forEach((key) => {
+  //           mergedData[year][key] = item[key];
+  //         });
+  //       });
+  //     });
+  //   });
+
+  //   const mergedDataArray = Object.values(mergedData);
+  //   return mergedDataArray;
+  // }
+
+
+  function mergeArraysByYear(data) {
     const mergedData = {};
-
-    data.forEach((dataArray) => {
-      dataArray.forEach((dataArray2) => {
-        dataArray2.forEach((item) => {
-          const year = item.year;
+  
+    data.forEach(innerArray => {
+      console.log(innerArray, 'innerArray')
+      innerArray.forEach(innerArray2 => {
+        innerArray2.forEach(innerArray3 => {
+          innerArray3.forEach(obj => {
+          console.log(obj, 'obj')
+          const year = obj.year;
+    
           if (!mergedData[year]) {
-            mergedData[year] = {};
+            mergedData[year] = { year };
           }
-          Object.keys(item).forEach((key) => {
-            mergedData[year][key] = item[key];
-          });
+    
+          // Merge properties into the existing year object
+          Object.assign(mergedData[year], obj);
         });
-      });
+        })
+      })
     });
-
-    const mergedDataArray = Object.values(mergedData);
-    return mergedDataArray;
+  
+    const mergedArray = Object.values(mergedData);
+  
+    return mergedArray;
   }
+  
 
   useEffect(() => {
-    const newData = mergeDataByYear(data);
+    // const newData = mergeDataByYear(data);
+    const newData = mergeArraysByYear(data);
     setDataForGraphing(newData);
     console.log("dataforgraphing", newData);
   }, [data, dataSelections]);
@@ -209,6 +320,9 @@ const Analytics = () => {
           dataSelections={dataSelections}
           setDataSelections={setDataSelections}
           setUniqueValues={setUniqueValues}
+          toggleSecondaryDistribution={toggleSecondaryDistribution}
+          setToggleSecondaryDistribution={setToggleSecondaryDistribution}
+          setSecondaryUniqueValues={setSecondaryUniqueValues}
         />
 
         <DisplaySelection
@@ -218,6 +332,9 @@ const Analytics = () => {
           setDataSelections={setDataSelections}
           data={data}
           setData={setData}
+          toggleSecondaryDistribution={toggleSecondaryDistribution}
+          secondaryUniqueValues={secondaryUniqueValues}
+          setSecondaryUniqueValues={setSecondaryUniqueValues}
         />
       </div>
 
@@ -239,33 +356,43 @@ const Analytics = () => {
         </div>
       </div>
 
-      {lines && (<ResponsiveContainer width="90%" height={350}>
+      <h3 className="chart_title">{dataSelections[0].selectedDataName} by {dataSelections[0].selectedDistributionName} {dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}</h3>
+
+      {lines && (<ResponsiveContainer width="90%" height={400}>
       <LineChart
-        // width={1000}
-        // height={getChartHeight()}
         data={dataForGraphing}
         margin={{
-          top: 5,
+          top: 20,
           right: 30,
           left: 65,
-          bottom: 5,
+          bottom: 0,
         }}
+        // ref={lineCharRef}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="year" />
-        <YAxis />
+        <XAxis dataKey="year">
+        <Label value="year" offset={-10} position="insideBottomLeft" />
+        </XAxis>
+        <YAxis>
+        <Label value="dollars" position="left" offset={10} angle={-90}/>
+        </YAxis>
         <Tooltip
-        formatter={tooltipFormatter} 
+        formatter={tooltipFormatter}
           wrapperStyle={{
             fontFamily: "Helvetica Neue",
             fontSize: "1.4rem",
             width: "max-width",
+
           }}
           itemStyle={{ display: "flex", gap: "0.5rem" }}
         />
         <Legend
-          wrapperStyle={{ fontFamily: "Helvetica Neue", fontSize: "1.4rem" }}
+          wrapperStyle={{ fontFamily: "Helvetica Neue", fontSize: "1.4rem", display:"flex", flexDirection: "column" }}
         />
+        {/* <button onClick={handleDownload}>
+        {isLoading ? 'Downloading...' : 'Download Chart'}
+      </button> */}
+        
         {lines}
       </LineChart>
       </ResponsiveContainer>)}

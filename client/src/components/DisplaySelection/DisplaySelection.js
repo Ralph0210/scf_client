@@ -10,12 +10,22 @@ const DisplaySelection = ({
   setData,
   dataSelections,
   setDataSelections,
+  toggleSecondaryDistribution,
+  secondaryUniqueValues,
+  setSecondaryUniqueValues,
 }) => {
   const [displayContainerKey, setDisplayContainerKey] = useState(0);
 
   const handleDataChange = (e, index) => {
     const updatedValue = [...dataSelections];
     updatedValue[index].selectedDisplay = e;
+    setDataSelections(updatedValue);
+    console.log("display handle", updatedValue);
+  };
+
+  const handleSecondaryDataChange = (e, index) => {
+    const updatedValue = [...dataSelections];
+    updatedValue[index].secondarySelectedDisplay = e;
     setDataSelections(updatedValue);
     console.log("display handle", updatedValue);
   };
@@ -60,14 +70,34 @@ const DisplaySelection = ({
             disableSearch={true}
             ClearSelectedIcon={null}
           />
-          <div
+          {/* <div
             className="deletion_container"
             onClick={() => handleDeletion(index)}
           >
             <Clear />
-          </div>
+          </div> */}
         </div>
       ))}
+
+      {toggleSecondaryDistribution && (
+        <div>
+        {dataSelections.map((data, index) => (
+          <div key={index} className="secondary_display_container_components">
+            <MultiSelect
+              className="multi-select"
+              options={secondaryUniqueValues[index]}
+              value={[...data.secondarySelectedDisplay]}
+              onChange={(e) => handleSecondaryDataChange(e, index)}
+              // shouldToggleOnHover={true}
+              labelledBy="Select"
+              overrideStrings={{ allItemsAreSelected: "All" }}
+              disableSearch={true}
+              ClearSelectedIcon={null}
+            />
+          </div>
+        ))}
+        </div>
+      )}
     </div>
   );
 };
