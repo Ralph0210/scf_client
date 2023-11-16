@@ -22,14 +22,53 @@ const ExploreData = ({
   setShouldRenderDataInfoCard,
   distinctVariables,
 }) => {
-  const [width, height] = useWindowSize({
-    initialWidth: 400,
-    initialHeight: 400,
-  });
+
+  const [clickCoordinates, setClickCoordinates] = useState({ x: 0, y: 0 });
+
+  const handleOnClick = (event) => {
+    // Get the coordinates of the click relative to the document
+    const { clientX, clientY } = event;
+
+    // Update state with the new coordinates
+    setClickCoordinates({ x: clientX, y: clientY });
+  };
+
   // const [data] = useState([25, 50, 35, 15, 94, 50]);
   const Viewer = useRef(null);
+  const divRef = useRef()
+  const [width, setWidth] = useState(400);
+  const [height, setHeight] = useState(1000);
   const [tool, setTool] = useState(TOOL_AUTO);
   const [value, setValue] = useState(INITIAL_VALUE);
+  // const [width, height] = useWindowSize({
+  //   initialWidth: 400,
+  //   initialHeight: 400,
+  // });
+
+  // useLayoutEffect(() => {
+  //   Viewer.current.fitToViewer();
+  // }, []);
+
+  const updateDimensions = () => {
+    const newWidth = divRef.current.offsetWidth;
+    const newHeight = divRef.current.offsetHeight;
+    setWidth(newWidth);
+    setHeight(newHeight);
+  };
+
+  useEffect(() => {
+    // Initial dimensions
+    updateDimensions();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', updateDimensions);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
+
   const svgRef = useRef();
   const svgRef2 = useRef();
   const clickedNode = useRef();
@@ -38,7 +77,7 @@ const ExploreData = ({
 
   useEffect(() => {
     const handleNodeClick = (d, i) => {
-      console.log(d, i);
+      // console.log(d, i);
       setShouldRenderDataInfoCard(true);
       setSelectedInfoData(i.data);
       // setSelectedNode(i);
@@ -47,12 +86,9 @@ const ExploreData = ({
     const old = d3.select(svgRef2.current);
     old.selectAll("*").remove();
 
-    // const width = size.width === undefined? window.innerWidth : size.width;
-    // const height =  height === undefined? window.innerHeight : height;
-    // const width = height
     const cx = width * 0.5; // adjust as needed to fit
     const cy = height * 0.59; // adjust as needed to fit
-    const radius = Math.min(width, height) / 2 - 30;
+    const radius = Math.min(width, height) / 2 + 150;
     // Create a radial tree layout. The layout’s first dimension (x)
     // is the angle, while the second (y) is the radius.
     const tree = d3
@@ -437,24 +473,39 @@ const ExploreData = ({
 
     // })
 
+    let accDx = 0
+    let accDy = 0
+
+    let dx = 0
+    let dy = 0
+
     // Define mouseover and mouseout event handlers for nodes
     nodes
       .on("click", function (d, i) {
-        console.log(i, "click");
 
         const past = clickedNode.current;
         clickedNode.current = i;
-        // handleNodeClick(d, i);
 
-        const centerX = d.x - cx;
-        const centerY = d.y - cy;
+        const mouseX = d.x
+        const moustY = d.y
 
-        console.log(d, i, d.x, d.y, i.x, i.y, cx, cy);
+        const centerX = width-radius+150;
+        const centerY = cy - 50;
+
+        accDx += dx
+        accDy += dy
+
+        dx = centerX - mouseX
+        dy = centerY - moustY
+
+        console.log(d, "mouseX:", mouseX, "mouseY:", moustY, "dx:", dx, "dy:", dy,`translate(${centerX +accDx + dx}, ${centerY + accDy + dy})`, centerX, centerY, accDx, accDy)
+
+        
 
         svg
           .transition()
           .duration(800)
-          .attr("transform", `translate(${cx - width / 2}, ${cy})`);
+          .attr('transform', `translate(${centerX +accDx + dx}, ${centerY + accDy + dy})`);
 
         nodeAnimation
           .filter((data) => data.data === i.data) // Filter for the matching data point
@@ -546,14 +597,14 @@ const ExploreData = ({
       })
       .on("mouseout", function (d, i) {
         // console.log(i.parent.data.name);
-        console.log(clickedNode, "selectedNode");
+        // console.log(clickedNode, "selectedNode");
         const isImmediateChild =
           clickedNode &&
           clickedNode.current &&
           i.parent &&
           i.parent.data &&
           i.parent.data.name === clickedNode.current.data.name;
-        console.log(isImmediateChild, "is or not is");
+        // console.log(isImmediateChild, "is or not is");
         if (clickedNode.current !== i) {
           // handleNodeClick(d, clickedNode);
           nodeAnimation
@@ -590,25 +641,25 @@ const ExploreData = ({
         // Change the circle size back to its original size
       });
 
-    svg.attr("transform", `translate(${cx - width / 2}, ${cy})`);
+    svg.attr("transform", `translate(${width-radius+150}, ${cy - 50})`);
   }, [width, height, selectedNode]);
 
   return (
     <>
-      <div className="pan_container">
+    <p>Click coordinates: ({clickCoordinates.x}, {clickCoordinates.y})</p>
+      <div className="pan_container" ref={divRef} onClick={handleOnClick}>
+        
         <ReactSVGPanZoom
           ref={Viewer}
           background="rgba(217, 217, 217, 0.20)"
           defaultTool="pan"
           width={width}
-          height={width}
+          height={height}
           tool={tool}
           onChangeTool={setTool}
           value={value}
           onChangeValue={setValue}
-          detectWheel={false}
           detectAutoPan={false}
-          detectPinchGesture={true}
           toolbarProps={{
             position: "none", // Set position to "none" to hide the toolbar
           }}
@@ -627,37 +678,3 @@ const ExploreData = ({
 };
 
 export default ExploreData;
-
-// import {useWindowSize} from '@react-hook/window-size'
-
-// const Resizable = (args) => {
-//     const Viewer = useRef(null);
-//     const [tool, onChangeTool] = useState(TOOL_NONE);
-//     const [value, onChangeValue] = useState(INITIAL_VALUE);
-//     const [width, height] = useWindowSize({ initialWidth: 400, initialHeight: 400 });
-
-//     return (
-//       <div style={{ width: '80%', height: '100%' }}>
-//         <ReactSVGPanZoom
-//           width={width}
-//           height={height}
-//           ref={Viewer}
-//           value={value}
-//           onChangeValue={onChangeValue}
-//           tool={tool}
-//           onChangeTool={onChangeTool}
-//         >
-//           <svg width={500} height={500}>
-//             <g>
-//               <rect x="400" y="40" width="100" height="200" fill="#4286f4" stroke="#f4f142" />
-//               <circle cx="108" cy="108.5" r="100" fill="#0ff" stroke="#0ff" />
-//               <circle cx="180" cy="209.5" r="100" fill="#ff0" stroke="#ff0" />
-//               <circle cx="220" cy="109.5" r="100" fill="#f0f" stroke="#f0f" />
-//             </g>
-//           </svg>
-//         </ReactSVGPanZoom>
-//       </div>
-//     );
-//   };
-
-//   export default Resizable;

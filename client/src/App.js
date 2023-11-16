@@ -2,7 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import Analytics_page from "./components/Analytics_page/Analytics_page";
 import { useState, useEffect } from "react";
 import Map from "./components/Map/Map";
@@ -11,6 +11,17 @@ import Map from "./components/Map/Map";
 
 
 function App() {
+
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  
+    return null; // You can return null or any other component
+  };
+
   const [topics, setTopics] = useState(new Set());
 
   const [isDataLoaded, setDataLoaded] = useState(false);
@@ -52,6 +63,7 @@ function App() {
 
   return (
     <div className="App">
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route

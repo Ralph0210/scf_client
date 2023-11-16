@@ -80,7 +80,7 @@ const Analytics = ({dataSelections, setDataSelections}) => {
   //   },
   // ]);
 
-  console.log(dataSelections, 'dataSelections')
+  // console.log(dataSelections, 'dataSelections')
 
   const [data, setData] = useState([]);
   const [dataForGraphing, setDataForGraphing] = useState([]);
@@ -179,7 +179,7 @@ const Analytics = ({dataSelections, setDataSelections}) => {
           const updatedData = [...prevData];
           updatedData[index] = retrievedData;
           const mergedArray = [].concat(...updatedData[index]);
-          console.log(mergedArray, 'updatedData')
+          // console.log(mergedArray, 'updatedData')
           return updatedData;
         });
       } catch (error) {
@@ -221,11 +221,11 @@ const Analytics = ({dataSelections, setDataSelections}) => {
     const mergedData = {};
   
     data.forEach(innerArray => {
-      console.log(innerArray, 'innerArray')
+      // console.log(innerArray, 'innerArray')
       innerArray.forEach(innerArray2 => {
         innerArray2.forEach(innerArray3 => {
           innerArray3.forEach(obj => {
-          console.log(obj, 'obj')
+          // console.log(obj, 'obj')
           const year = obj.year;
     
           if (!mergedData[year]) {
