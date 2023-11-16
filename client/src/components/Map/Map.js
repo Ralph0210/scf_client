@@ -23,7 +23,6 @@ const Map = ({distinctVariables,dataSelections, setDataSelections}) => {
   return (
     <div className='map_component_container' >
       <Alert />
-      {/* <ExploreData distinctVariables={distinctVariables} setSelectedInfoData={setSelectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard}/> */}
       <E3  distinctVariables={distinctVariables} setSelectedInfoData={setSelectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard}/>
       {shouldRenderDataInfoCard && <DataInfoCard data={selectedInfoData} setShouldRenderDataInfoCard={setShouldRenderDataInfoCard} dataSelections={dataSelections} setDataSelections={setDataSelections}/>}
     </div>
