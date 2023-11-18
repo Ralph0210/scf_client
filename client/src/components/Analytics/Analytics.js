@@ -1,6 +1,7 @@
 import React from "react";
 import FileSaver, {saveAs} from "file-saver";
 import "./Analytics.css";
+import IosShareIcon from '@mui/icons-material/IosShare';
 import {
   LineChart,
   Line,
@@ -29,34 +30,35 @@ const getRandomColor = () => {
   return `hsl(${hue}, 70%, 50%)`;
 };
 
-const Analytics = ({dataSelections, setDataSelections}) => {
+const Analytics = ({dataSelections, setDataSelections, uniqueValues, setUniqueValues}) => {
+  const [unitLabel, setUnitLabel] = useState("dollars")
   const referenceToSvgChart = useRef();
   const handleAreaDownload = () => {
     const element = referenceToSvgChart.current.container
 
     const svgURL = new XMLSerializer().serializeToString(element);
     const svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
-    
-    saveAs(svgBlob,"Hello.svg");
+    const chartName = `${dataSelections[0].selectedDataName} by ${dataSelections[0].selectedDistributionName} ${dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}`;
+    saveAs(svgBlob, chartName);
 
   }
 
 
   const [toggleSecondaryDistribution, setToggleSecondaryDistribution] = useState(false)
   const [lines, setLines] = useState([]);
-  const [uniqueValues, setUniqueValues] = useState([
-    [
-      {
-        label: "35 <",
-        value: 1,
-      },
-      { label: "35-44", value: 2 },
-      { label: "45-54", value: 3 },
-      { label: "55-64", value: 4 },
-      { label: "65-74", value: 5 },
-      { label: "75+", value: 6 },
-    ],
-  ]);
+  // const [uniqueValues, setUniqueValues] = useState([
+  //   [
+  //     {
+  //       label: "less than 35",
+  //       value: 1,
+  //     },
+  //     { label: "35-44", value: 2 },
+  //     { label: "45-54", value: 3 },
+  //     { label: "55-64", value: 4 },
+  //     { label: "65-74", value: 5 },
+  //     { label: "more than 75", value: 6 },
+  //   ],
+  // ]);
 
   const [secondaryUniqueValues, setSecondaryUniqueValues] = useState([
     [
@@ -338,6 +340,7 @@ const Analytics = ({dataSelections, setDataSelections}) => {
         <UnitSelection
           selectedUnit={selectedUnit}
           setSelectedUnit={setSelectedUnit}
+          setUnitLabel={setUnitLabel}
         />
 
         <div className="year_range_container">
@@ -352,8 +355,8 @@ const Analytics = ({dataSelections, setDataSelections}) => {
         </div>
 
         <div className="export_container">
-        <label htmlFor="year_range">Export</label>
-        <div onClick={() => handleAreaDownload()}>download</div>
+        <label htmlFor="export">Export</label>
+        <div onClick={() => handleAreaDownload()}><IosShareIcon style={{width: 55, fontSize:"2.5rem",cursor:"pointer", marginTop:'3.6rem', fill:"#7C9CBF"}}/></div>
         </div>
       </div>
 
@@ -376,7 +379,7 @@ const Analytics = ({dataSelections, setDataSelections}) => {
         <Label value="year" offset={-10} position="insideBottomLeft" />
         </XAxis>
         <YAxis>
-        <Label value="dollars" position="left" offset={10} angle={-90}/>
+        <Label value={unitLabel} position="left" offset={10} angle={-90}/>
         </YAxis>
         <Tooltip
         formatter={tooltipFormatter}
