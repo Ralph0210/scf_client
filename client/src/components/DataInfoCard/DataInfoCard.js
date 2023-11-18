@@ -1,9 +1,35 @@
 import React from 'react'
 import './DataInfoCard.css'
 import { Clear } from "@mui/icons-material";
+import { motion } from "framer-motion";
+import { distinctValues } from "../api";
+
 
 const DataInfoCard = (props) => {
-    const { data, setShouldRenderDataInfoCard, dataSelections, setDataSelections} = props
+  const fetchDistinctValues = async (dataSelection, index) => {
+    try {
+      const apiParams = {
+        selectedDistribution: dataSelection.selectedDistribution,
+      };
+
+      const retrievedData = await distinctValues(
+        apiParams.selectedDistribution
+      );
+
+      console.log(`uniData for Item ${index}:`, retrievedData);
+      // Update the data state with the retrieved data for the specific item
+      setUniqueValues((prevData) => {
+        const updatedData = [...prevData];
+        updatedData[index] = retrievedData;
+        // console.log(updatedData);
+        return updatedData;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+    const { data, setShouldRenderDataInfoCard, dataSelections, setDataSelections, uniqueValues, setUniqueValues} = props
     console.log(data)
 
     const addData = (data) => {
@@ -14,7 +40,6 @@ const DataInfoCard = (props) => {
       updatedData[0].selectedData = selectedData
       updatedData[0].selectedDataName = selectedDataName
       setDataSelections(updatedData)
-      console.log('clicked')
     }
 
     const addCategoricalData = (data) => {
@@ -24,22 +49,51 @@ const DataInfoCard = (props) => {
       const updatedData = [...dataSelections]
       updatedData[0].selectedDistribution = selectedDistribution
       updatedData[0].selectedDistributionName = selectedDistributionName
+      updatedData[0].selectedDisplay = []
+      fetchDistinctValues(updatedData[0], 0);
       setDataSelections(updatedData)
-      console.log('clicked')
     }
 
   return (
-    <div className='dataCard'>
+    <motion.div className='dataCard'
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}>
        
         <div className='hid-box'>
-          <h4>{data.name}</h4>
+          <motion.h4
+          key={data.name} // Ensure a unique key for smooth transitions
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          >{data.name}</motion.h4>
+          <motion.div
+          key={data.description} // Ensure a unique key for smooth transitions
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }} // Adjust the duration as needed
+        >
         {data.description}
-
-        {data.isCategorical ?  <button onClick={() => addCategoricalData(data)}>add to distribution</button> :  <button onClick={() => addData(data)}>add</button>}
-       
+        </motion.div>
+        {/* {data.isCategorical ?  <button className='dataInfoButton' style={{backgroundColor: "#70B77E"}} onClick={() => addCategoricalData(data)}>Add to distribution</button> :  <button className='dataInfoButton' style={{backgroundColor:"#0E518E"}} onClick={() => addData(data)}>Add</button>} */}
+        {data.noAdd ? (
+  "" // If noAdd is true, return an empty string
+) : (
+  data.isCategorical ? (
+    <button className='dataInfoButton' style={{ backgroundColor: "#70B77E" }} onClick={() => addCategoricalData(data)}>
+      Add to distribution
+    </button>
+  ) : (
+    <button className='dataInfoButton' style={{ backgroundColor: "#0E518E" }} onClick={() => addData(data)}>
+      Add
+    </button>
+  )
+)}
         </div>
         <div onClick={() => setShouldRenderDataInfoCard(false)} className='dataCard-close'><Clear /></div>
-        </div>
+        </motion.div>
   )
 }
 

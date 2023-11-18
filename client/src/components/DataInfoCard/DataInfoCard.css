@@ -5,12 +5,11 @@
   bottom: 0;
   left: 0;
   transition: 1s ease-in-out;
-  background-color: white;
+  background-color: #FDFFFC;
   z-index: 999;
   bottom: 0;
-  width: 100%;
-  height: 20rem;
-  background-color: #ebf4f8;
+  height: auto;
+  background-color: rgba(235, 244, 248, 0.8);
   z-index: 999;
   display: flex;
   /* justify-content: center; */
@@ -21,7 +20,8 @@
   line-height: normal;
   color: #1e2019;
   /* align-items: center; */
-  width: 27%;
+  width: 28%;
+  overflow: auto;
 }
 
 .hid-box{
@@ -29,11 +29,12 @@
   flex-direction: column;
   gap: 2rem;
   margin: 5rem;
+  width: 100%;
 }
 
 .dataCard-close{
   position: absolute;
-  right: 2rem;
+  right: 3rem;
   top: 2rem;
   cursor: pointer;
   transition: transform 0.2s;
@@ -41,4 +42,22 @@
 
 .dataCard-close:hover{
   transform: scale(1.5);
+}
+
+.dataInfoButton{
+  align-self: flex-end;
+  width: max-content;
+  border: 0;
+  /* background-color: #0E518E; */
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-family: Helvetica Neue;
+  padding: 1.25rem 2rem;
+  color: #FDFFFC;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+}
+
+.dataInfoButton:hover{
+  transform: scale(1.1);
 }

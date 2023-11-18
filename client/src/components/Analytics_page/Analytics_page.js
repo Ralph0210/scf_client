@@ -19,14 +19,30 @@ const Analytics_page = ({distinctVariables}) => {
       secondarySelectedDisplay: [{ label: "None", value: "None" }],
     },
   ]);
+
+  const [uniqueValues, setUniqueValues] = useState([
+    [
+      {
+        label: "less than 35",
+        value: 1,
+      },
+      { label: "35-44", value: 2 },
+      { label: "45-54", value: 3 },
+      { label: "55-64", value: 4 },
+      { label: "65-74", value: 5 },
+      { label: "more than 75", value: 6 },
+    ],
+  ]);
+
+
   return (
     <>
     <div className='analytics_page_container'>
         <div className='analytics_page_map_container'>
-            <Map distinctVariables={distinctVariables} dataSelections={dataSelections} setDataSelections={setDataSelections}/>
+            <Map distinctVariables={distinctVariables} dataSelections={dataSelections} setDataSelections={setDataSelections} uniqueValues={uniqueValues} setUniqueValues={setUniqueValues}/>
             </div>
         <div className='analytics_page_analytics_container'>
-            <Analytics dataSelections={dataSelections} setDataSelections={setDataSelections}/>
+            <Analytics dataSelections={dataSelections} setDataSelections={setDataSelections} uniqueValues={uniqueValues} setUniqueValues={setUniqueValues}/>
             <Footer />
             </div>
     </div>

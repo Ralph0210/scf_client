@@ -100,11 +100,9 @@ app.get("/api/survey", async (req, res) => {
               }
             }else if (selectedUnit === "Log Mean") {
               // Calculate the weighted logarithmic mean if selectedUnit is "Log Mean"
-              const logValues = surveyData.map(entry => ({ logValue: Math.log(entry.dataValues[selectedData]), weight: entry.dataValues.WGT }));
-              const totalWeightedLog = logValues.reduce((acc, { logValue, weight }) => acc + logValue * weight, 0);
-              const totalWeight = logValues.reduce((acc, { weight }) => acc + weight, 0);
-              console.log(totalWeight)
-              statistic = totalWeightedLog / totalWeight;
+              const totalVWGT = surveyData.reduce((acc, entry) => acc + entry.dataValues[selectedData] * entry.dataValues.WGT, 0);
+             
+              statistic = Math.log(totalVWGT / totalWGT);
             } else if (selectedUnit === "Log Median") {
               // Calculate the weighted logarithmic median if selectedUnit is "Log Median"
               const sortedEntries = surveyData
@@ -130,7 +128,7 @@ app.get("/api/survey", async (req, res) => {
         
         if (secondarySelectedDisplayName !== "None") {
           // Include the property only if secondarySelectedDisplayName is not "None"
-          dataObject[`${selectedDistributionName} ${selectedDisplayName} ${secondarySelectedDisplayName}`] = statistic;
+          dataObject[`${selectedDistributionName} ${selectedDisplayName} ${secondarySelectedDistributionName} ${secondarySelectedDisplayName}`] = statistic;
         } else{
           dataObject[`${selectedDistributionName} ${selectedDisplayName} `] = statistic;
         }
@@ -308,6 +306,80 @@ app.get("/distinct-values", async (req, res) => {
           // You can add more conditions for different OCCAT2 values here
           // For unknown values, return the value itself as both label and value
           return { label: item.dataValues.value, value: OCCAT2 };
+        }
+        }else if (selectedDistribution === "HVEHIC") {
+          const HVEHIC = parseInt(value);
+
+        if (HVEHIC === 1) {
+          return { label: "Yes", value: 1 };
+        } else if (HVEHIC === 0) {
+          return { label: "No", value: 0 };
+        } else {
+
+          return { label: item.dataValues.value, value: HVEHIC };
+        }
+        }else if (selectedDistribution === "LEASE") {
+          const LEASE = parseInt(value);
+
+        if (LEASE === 1) {
+          return { label: "Yes", value: 1 };
+        } else if (LEASE === 0) {
+          return { label: "No", value: 0 };
+        } else {
+          return { label: item.dataValues.value, value: LEASE };
+        }
+        }else if (selectedDistribution === "HNFIN") {
+          const HNFIN = parseInt(value);
+
+        if (HNFIN === 1) {
+          return { label: "Yes", value: 1 };
+        } else if (HNFIN === 0) {
+          return { label: "No", value: 0 };
+        } else {
+          return { label: item.dataValues.value, value: HNFIN };
+        }
+        }else if (selectedDistribution === "HDEBT") {
+          const HDEBT = parseInt(value);
+
+        if (HDEBT === 1) {
+          return { label: "Yes", value: 1 };
+        } else if (HDEBT === 0) {
+          return { label: "No", value: 0 };
+        } else {
+          return { label: item.dataValues.value, value: HDEBT };
+        }
+        }
+        else if (selectedDistribution === "EDCL") {
+          const EDCL = parseInt(value);
+
+        if (EDCL === 1) {
+          return { label: "no high school diploma/GED", value: 1 };
+        } else if (EDCL === 2) {
+          return { label: "high school diploma or GED", value: 2 };
+        }  else if (EDCL === 3) {
+          return { label: "some college or Assoc. degree", value: 3 };
+        } else if (EDCL === 4) {
+          return { label: "Bachelors degree or higher", value: 4 };
+        }
+        else {
+          return { label: item.dataValues.value, value: EDCL };
+        }
+        }
+        else if (selectedDistribution === "FAMSTRUCT") {
+          const FAMSTRUCT = parseInt(value);
+
+        if (FAMSTRUCT === 1) {
+          return { label: "not married/LWP + children", value: 1 };
+        } else if (FAMSTRUCT === 2) {
+          return { label: "not married/LWP + no children + reference person under 55", value: 2 };
+        } else if (FAMSTRUCT === 3) {
+          return { label: "not married/LWP + no children + reference person 55 or older", value: 3 };
+        } else if (FAMSTRUCT === 4) {
+          return { label: "married/LWP+ children", value: 4 };
+        } else if (FAMSTRUCT === 5) {
+          return { label: "married/LWP + no children", value: 5 };
+        } else {
+          return { label: item.dataValues.value, value: FAMSTRUCT };
         }
         }
         

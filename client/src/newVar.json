@@ -1,15 +1,23 @@
 {
   "name": "Start Here",
   "description": "Explore from here",
+  "noAdd": true,
   "children": [
     {
       "name": "Demographics",
       "description": "Variables related to personal and household demographics.",
+      "noAdd": true,
       "children": [
         {
           "name": "Age",
           "description": "Age of the respondent.",
           "value": "AGECL",
+          "isCategorical": true
+        },
+        {
+          "name": "Education",
+          "description": "Highest education level of the respondent.",
+          "value": "EDCL",
           "isCategorical": true
         },
         {
@@ -22,7 +30,7 @@
           "name": "Children Count",
           "description": "The number of children in the household, including natural children, step-children, and foster children of the reference person, spouse, or partner. This variable provides a count of all children within the household based on the available data.",
           "value": "KIDS",
-          "isCategorical": false
+          "isCategorical": true
         },
         {
           "name": "Race Category",
@@ -32,8 +40,14 @@
         },
         {
           "name": "Occupation Classification",
-          "description": "Occupation classification of the reference person. This variable further categorizes the reference person's occupation into four groups:",
+          "description": "Occupation classification of the reference person. This variable further categorizes the reference person's occupation into four groups",
           "value": "OCCAT2",
+          "isCategorical": true
+        },
+        {
+          "name": "Family Structure",
+          "description": "Family structure of the reference person. This variable further categorizes the reference person's occupation into five groups",
+          "value": "FAMSTRUCT",
           "isCategorical": true
         },
         {
@@ -46,6 +60,7 @@
     },
     {
       "name": "Income and Earnings",
+      "noAdd": true,
       "description": "Variables related to income and earnings of respondents.",
       "children": [
         {
@@ -100,6 +115,7 @@
     },
     {
       "name": "Financial Assets",
+      "noAdd": true,
       "description": "Variables related to saving, spending, and financial risk.",
       "children": [
         {
@@ -214,6 +230,7 @@
     },
     {
       "name": "Nonfinancial Assets",
+      "noAdd": true,
       "description": "Variables related to banking and savings behavior.",
       "children": [
         {
@@ -271,17 +288,6 @@
           "isCategorical": true
         },
         {
-          "name": "Financial Spending Status",
-          "description": "Methods and strategies used for saving money.",
-          "value": "WSAVED",
-          "data": {
-            "1": "Spending exceeded income",
-            "2": "Spending equaled income",
-            "3": "Spending was less than income"
-          },
-          "isCategorical": true
-        },
-        {
           "name": "Use of Prepaid Cards",
           "description": "Usage and management of prepaid cards for financial transactions.",
           "value": "PREPAID"
@@ -300,6 +306,7 @@
     },
     {
       "name": "Debt",
+      "noAdd": true,
       "description": "Variables related to assets and debt.",
       "children": [
         {

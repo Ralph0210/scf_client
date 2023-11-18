@@ -77,10 +77,10 @@ const ExploreData = ({
 
   useEffect(() => {
     const handleNodeClick = (d, i) => {
-      // console.log(d, i);
-      setShouldRenderDataInfoCard(true);
+      if (i) {
+        setShouldRenderDataInfoCard(true);
       setSelectedInfoData(i.data);
-      // setSelectedNode(i);
+      }
     };
 
     const old = d3.select(svgRef2.current);
@@ -436,12 +436,27 @@ const ExploreData = ({
       .selectAll()
       .data(root.descendants())
       .join("text")
+      // .attr(
+      //   "transform",
+      //   (d) =>
+      //     `rotate(${(d.x * 180) / Math.PI - 90})
+      //   translate(${d.y},0)
+      //   rotate(${-(d.x * 180) / Math.PI + 90})`
+      // )
       .attr(
         "transform",
-        (d) =>
-          `rotate(${(d.x * 180) / Math.PI - 90})
-        translate(${d.y},0)
-        rotate(${-(d.x * 180) / Math.PI + 90})`
+        (d) => {
+          const isSpecialLabel =
+            d.data.name === "Value of Primary Residence" ||
+            d.data.name === "Credit Card Balance"||
+            d.data.name === "Prepaid Card" ||
+            d.data.name === "Retirement Accounts";
+          const offset = isSpecialLabel ? 10 : 0;
+          return `
+            rotate(${(d.x * 180) / Math.PI - 90})
+            translate(${d.y + offset}, 0)
+            rotate(${-(d.x * 180) / Math.PI + 90})`;
+        }
       )
       .attr("dy", "0.31em")
       .attr("x", (d) => (d.x < Math.PI === !d.children ? 10 : -10))
@@ -571,7 +586,8 @@ const ExploreData = ({
         // Change the circle size
 
         if (clickedNode.current !== i) {
-          handleNodeClick(d, i);
+            handleNodeClick(d, i);
+          
           nodeAnimation
             .filter((data) => data.data === i.data) // Filter for the matching data point
             .transition()
@@ -594,10 +610,10 @@ const ExploreData = ({
             .attr("x", (d) => (d.x < Math.PI === !d.children ? 20 : -20))
             .style("opacity", 1);
         }
+        
       })
       .on("mouseout", function (d, i) {
-        // console.log(i.parent.data.name);
-        // console.log(clickedNode, "selectedNode");
+        handleNodeClick(d, clickedNode.current);
         const isImmediateChild =
           clickedNode &&
           clickedNode.current &&
@@ -606,7 +622,7 @@ const ExploreData = ({
           i.parent.data.name === clickedNode.current.data.name;
         // console.log(isImmediateChild, "is or not is");
         if (clickedNode.current !== i) {
-          // handleNodeClick(d, clickedNode);
+          
           nodeAnimation
             .filter((data) => data.data === i.data) // Filter for the matching data point
             .transition()
@@ -646,7 +662,6 @@ const ExploreData = ({
 
   return (
     <>
-    <p>Click coordinates: ({clickCoordinates.x}, {clickCoordinates.y})</p>
       <div className="pan_container" ref={divRef} onClick={handleOnClick}>
         
         <ReactSVGPanZoom

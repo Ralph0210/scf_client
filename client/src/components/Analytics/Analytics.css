@@ -151,16 +151,18 @@ align-items: center;
 }
 
 .adjustment {
-  width: 99rem;
+  min-width: 99rem;
+  width: 90%;
   height: 14.5rem;
   flex-shrink: 0;
   border-radius: 2rem;
   background: #ebf4f8;
   margin-left: 3rem;
   display: flex;
-  gap: 14rem;
+  gap: 7rem;
   align-items: center;
   padding-left: 3.6rem;
+  padding-bottom: 2rem;
   margin-bottom: 3.2rem;
 }
 
@@ -193,6 +195,14 @@ align-items: center;
 
 .units {
   margin-top: 3.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.units_container{
+  display: flex;
+  gap: 1rem;
 }
 
 .year_range {
@@ -206,10 +216,8 @@ align-items: center;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-}
-
-.units input {
-  background-color: #0e518e;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .additionButton{
@@ -234,3 +242,48 @@ color: #2C2738;
 margin-left: 6.5rem;
 }
 
+.year_range {
+  color: #000;
+  font-family: Helvetica Neue;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.export_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 4.5rem;
+}
+
+.export_container > label {
+  color: #000;
+
+  /* description */
+  font-family: Helvetica Neue;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.info-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.popup{
+  position: absolute;
+  background-color: #fdfffc;
+  font-size: 1rem;
+  font-family: Helvetica Neue;
+  border-radius: 1rem;
+  border: #000 1px solid;
+  padding: 1rem 1rem;
+  top: -40px; /* Adjust this value based on your needs */
+  left: -20px; 
+  width: max-content;
+  z-index: 999;
+}

@@ -43,7 +43,7 @@ const DistributionSelection = ({
       updatedValue[index].selectedDistribution = selectedDistribution;
       updatedValue[index].selectedDistributionName = selectedDistributionName;
       updatedValue[index].selectedDisplay = [];
-      console.log(selectedDistribution, selectedDistributionName)
+      // console.log(selectedDistribution, selectedDistributionName)
       fetchDistinctValues(updatedValue[index], index);
     }
     setDataSelections(updatedValue);
