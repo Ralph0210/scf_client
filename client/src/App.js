@@ -16,7 +16,10 @@ function App() {
     const { pathname } = useLocation();
   
     useEffect(() => {
-      window.scrollTo(0, 0);
+      if (pathname === '/analyticsPage') {
+        window.scrollTo(0, 0);
+      }
+  
     }, [pathname]);
   
     return null; // You can return null or any other component
