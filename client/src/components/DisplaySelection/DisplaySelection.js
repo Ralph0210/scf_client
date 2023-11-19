@@ -56,6 +56,7 @@ const DisplaySelection = ({
     // key={displayContainerKey}
     >
       <label htmlFor="Display">Display</label>
+      {dataSelections[0].selectedDisplay.length === 0 ? <p className="warning">Please select at least 1 display group</p> : <p className="warning" style={{color:"#FDFFFC"}}>Please select at least 1 display group</p>}
 
       {dataSelections.map((data, index) => (
         <div key={index} className="display_container_components">

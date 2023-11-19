@@ -75,7 +75,12 @@ const DataSelection = ({
               </optgroup>
             ))}
           </select>
-          <div className='connection'></div>
+          <div className='connection'  style={{
+            backgroundColor:
+              data.selectedData === undefined || data.selectedDistribution === undefined
+                ? '#FDFFFC'
+                : '#7C9CBF', // Set your default color here
+          }}></div>
         </div>
         
       ))}

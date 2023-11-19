@@ -153,7 +153,12 @@ const DistributionSelection = ({
          <div><Add /></div>
          </div>
 
-        <div className='connection'></div>
+        <div className='connection' style={{
+            backgroundColor:
+              dataSelections[0].selectedDisplay.length === 0 || dataSelections[0].selectedDistribution === undefined
+                ? '#FDFFFC'
+                : '#7C9CBF', // Set your default color here
+          }}></div>
       </div>
 
       {toggleSecondaryDistribution && (

@@ -93,8 +93,7 @@ select:hover{
   width: 5rem;
   height: 0.25rem;
   border-radius: 2rem;
-  stroke: #7C9CBF;
-  background-color: #7C9CBF;
+  /* background-color: #7C9CBF; */
   z-index: 999;
 }
 
@@ -103,7 +102,7 @@ select:hover{
   flex-direction: column;
   padding-top: 16.5rem;
   /* margin-left: 1rem; */
-  gap: 2.5rem;
+  gap: 0.6rem;
   font-family: Helvetica Neue;
   font-size: 2rem;
   font-style: normal;
@@ -111,14 +110,15 @@ select:hover{
   line-height: normal;
   color: #1e2019;
   z-index: 999;
+  position: relative;
 }
 
-.display_container p {
+/* .display_container p {
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
   color: #ff9f1c;
-}
+} */
 
 .deletion_container {
      color: #ff9f1c;
@@ -287,3 +287,4 @@ margin-left: 6.5rem;
   width: max-content;
   z-index: 999;
 }
+
