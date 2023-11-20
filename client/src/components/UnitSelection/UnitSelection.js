@@ -31,12 +31,12 @@ const UnitSelection = ({
 
   const handleUnitChange = (event) => {
     setSelectedUnit(event.target.value);
-    setUnitLabel("dollars")
+    setUnitLabel("2022 dollars")
   };
 
   const handleUnitChangeLog = (event) => {
     setSelectedUnit(event.target.value);
-    setUnitLabel("log dollars")
+    setUnitLabel("log 2022 dollars")
   };
 
   return (

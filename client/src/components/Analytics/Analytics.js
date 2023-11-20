@@ -2,6 +2,7 @@ import React from "react";
 import FileSaver, {saveAs} from "file-saver";
 import "./Analytics.css";
 import IosShareIcon from '@mui/icons-material/IosShare';
+import html2canvas from 'html2canvas';
 import {
   LineChart,
   Line,
@@ -21,27 +22,44 @@ import { retrieve } from "../api";
 import DataSelection from "../DataSelection/DataSelection";
 import DistributionSelection from "../DistributionSelection/DistributionSelection";
 import DisplaySelection from "../DisplaySelection/DisplaySelection";
-import { useCurrentPng, useGenerateImage } from "recharts-to-png";
+// import { useCurrentPng, useGenerateImage } from "recharts-to-png";
 
-const getRandomColor = () => {
-  // Generate a random hue between 0 and 360
-  const hue = Math.floor(Math.random() * 360);
-  // Create an HSL color
-  return `hsl(${hue}, 70%, 50%)`;
-};
+// const getRandomColor = () => {
+//   // Generate a random hue between 0 and 360
+//   const hue = Math.floor(Math.random() * 360);
+//   // Create an HSL color
+//   return `hsl(${hue}, 70%, 50%)`;
+// };
 
 const Analytics = ({dataSelections, setDataSelections, uniqueValues, setUniqueValues}) => {
-  const [unitLabel, setUnitLabel] = useState("dollars")
-  const referenceToSvgChart = useRef();
-  const handleAreaDownload = () => {
-    const element = referenceToSvgChart.current.container
+  const [unitLabel, setUnitLabel] = useState("2022 dollars")
 
-    const svgURL = new XMLSerializer().serializeToString(element);
-    const svgBlob = new Blob([svgURL], {type: "image/svg+xml;charset=utf-8"});
-    const chartName = `${dataSelections[0].selectedDataName} by ${dataSelections[0].selectedDistributionName} ${dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}`;
-    saveAs(svgBlob, chartName);
+  const referenceToChart = useRef();
 
-  }
+  const handleDownload = async () => {
+    const chartElement = referenceToChart.current;
+  
+    try {
+      const canvas = await html2canvas(chartElement, {
+        height: chartElement.offsetHeight + 100, // Set the height of the canvas
+      });
+      const context = canvas.getContext('2d');
+  
+      // Add watermark
+      const watermarkText = 'Your Watermark';
+      context.font = '20px Arial';
+      context.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust transparency as needed
+      context.fillText(watermarkText, 200, canvas.height - 200);
+      const chartName = `${dataSelections[0].selectedDataName} by ${dataSelections[0].selectedDistributionName} ${dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}${unitLabel === "2022 dollars" ? "($)": "Log($)"}`;
+  
+      canvas.toBlob((blob) => {
+        saveAs(blob, chartName);
+      });
+    } catch (error) {
+      console.error('Error exporting chart:', error);
+    }
+  };
+  
 
 
   const [toggleSecondaryDistribution, setToggleSecondaryDistribution] = useState(false)
@@ -356,15 +374,16 @@ const Analytics = ({dataSelections, setDataSelections, uniqueValues, setUniqueVa
 
         <div className="export_container">
         <label htmlFor="export">Export</label>
-        <div onClick={() => handleAreaDownload()}><IosShareIcon style={{width: 55, fontSize:"2.5rem",cursor:"pointer", marginTop:'3.6rem', fill:"#7C9CBF"}}/></div>
+        <div onClick={() => handleDownload()}><IosShareIcon style={{width: 55, fontSize:"2.5rem",cursor:"pointer", marginTop:'3.6rem', fill:"#7C9CBF"}}/></div>
         </div>
       </div>
 
-      <h3 className="chart_title">{dataSelections[0].selectedDataName} by {dataSelections[0].selectedDistributionName} {dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}</h3>
+      <div ref={referenceToChart}>
+
+      <h3 className="chart_title" style={{marginBottom:"2rem"}}>{dataSelections[0].selectedDataName} by {dataSelections[0].selectedDistributionName} {dataSelections[0].secondarySelectedDistributionName === "None" ? "" : `and ${dataSelections[0].secondarySelectedDistributionName}`}{unitLabel === "2022 dollars"? "($)": "Log($)"}</h3>
 
       {lines && (<ResponsiveContainer width="90%" height={400}>
       <LineChart
-      ref={referenceToSvgChart}
         data={dataForGraphing}
         margin={{
           top: 20,
@@ -394,13 +413,10 @@ const Analytics = ({dataSelections, setDataSelections, uniqueValues, setUniqueVa
         <Legend
           wrapperStyle={{ fontFamily: "Helvetica Neue", fontSize: "1.4rem", display:"flex", flexDirection: "column" }}
         />
-        {/* <button onClick={handleDownload}>
-        {isLoading ? 'Downloading...' : 'Download Chart'}
-      </button> */}
         
         {lines}
       </LineChart>
-      </ResponsiveContainer>)}
+      </ResponsiveContainer>)}</div>
     </div>
   );
 };

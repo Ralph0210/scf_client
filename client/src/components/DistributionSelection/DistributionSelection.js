@@ -190,7 +190,12 @@ const DistributionSelection = ({
       <div className="secondary_deletion_container">
       <p onClick={handleClose}><Clear/></p>
       </div>
-      <div className='connection'></div>
+      <div className='connection' style={{
+            backgroundColor:
+              dataSelections[0].secondarySelectedDisplay.length === 0 || dataSelections[0].selectedDistribution === undefined
+                ? '#FDFFFC'
+                : '#7C9CBF', // Set your default color here
+          }}></div>
       </div>)}
 
     </div>
