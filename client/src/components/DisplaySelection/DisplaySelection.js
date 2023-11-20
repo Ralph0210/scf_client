@@ -82,6 +82,8 @@ const DisplaySelection = ({
 
       {toggleSecondaryDistribution && (
         <div>
+           {dataSelections[0].secondarySelectedDisplay.length === 0 ? <p className="warning">Please select at least 1 display group</p> : <p className="warning" style={{color:"#FDFFFC"}}>Please select at least 1 display group</p>}
+
         {dataSelections.map((data, index) => (
           <div key={index} className="secondary_display_container_components">
             <MultiSelect

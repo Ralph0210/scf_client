@@ -83,11 +83,11 @@ const DataInfoCard = (props) => {
 ) : (
   data.isCategorical ? (
     <button className='dataInfoButton' style={{ backgroundColor: "#70B77E" }} onClick={() => addCategoricalData(data)}>
-      Add to distribution
+      Select this distribution
     </button>
   ) : (
     <button className='dataInfoButton' style={{ backgroundColor: "#0E518E" }} onClick={() => addData(data)}>
-      Add
+      Select this data
     </button>
   )
 )}
