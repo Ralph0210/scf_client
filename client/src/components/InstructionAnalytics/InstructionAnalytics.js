@@ -150,39 +150,15 @@ const InstructionAnalytics = () => {
 
   return (
     <div className="analytics_container">
-
-
-<div className="source">
-      <DataSelection
-        uniqueValues={uniqueValues}
-        setUniqueValues={setUniqueValues}
-        dataSelections={dataSelections}
-        setDataSelections={setDataSelections}
-        data={data}
-        setData={setData}
-      />
-
-    </div>
-
-      <LineChart
-        width={750}
-        height={250}
-        data={dataForGraphing}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 30,
-          bottom: 0,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="year" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {lines}
-      </LineChart>
-    </div>
+    <video
+      src="/analysisDemo.mov"
+      width="100%"
+      height="100%"
+      autoPlay
+      loop
+    >
+    </video>
+  </div>
   );
 };
 

@@ -385,17 +385,9 @@ const ExploreData2 = ({ setSelectedInfoData, setShouldRenderDataInfoCard }) => {
   }, [size]);
 
   return (
-    <>
-      <motion.div
-        drag
-        // dragSnapToOrigin={true}
-        dragConstraints={{ left: -100, right: 50, top: -50, bottom: 50}}
-        dragTransition={{ delay: 0, ease: "linear" }}
-        dragMomentum={false}
-      >
-        <svg ref={svgRef}>{/* <g ref={svgRef}></g> */}</svg>
-      </motion.div>
-    </>
+    <div>
+      <video src="/mapDemo.mov" width="100%" height="95%" style={{zIndex:999}}autoPlay loop muted></video>
+    </div>
   );
 };
 

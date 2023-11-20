@@ -7,6 +7,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import ExploreData2 from "../ExploreData/ExploreData2";
+import E3 from "../ExploreData/E3";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import InstructionAnalytics from "../InstructionAnalytics/InstructionAnalytics";
 
