@@ -11,11 +11,11 @@ const Home = ({topics, setTopics, isDataLoaded}) => {
   const InstructionRef = useRef(null)
   const [toggleAlert, setToggleAlert] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
-console.log(toggleAlert,'toggle')
+
 const Alert = () => (
   <div className='alert'>
   <img src='/desktopIcon.png'/>
-  <p>Your screen will be too small for the discovery page</p>
+  <p>Your screen will be too small for the analysis page</p>
   <p>Please access this website from a desktop device.</p>
   <span onClick={() => setIsDismissed(true)}>dismiss</span>
   </div>
