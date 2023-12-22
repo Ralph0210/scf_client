@@ -5,6 +5,16 @@ const {scfp2022, scfp2019, scfp2016, scfp2013, scfp2010, scfp2007, scfp2004, scf
 require("dotenv").config();
 const path = require('path')
 
+const OpenAI = require("openai");
+const dotenv = require("dotenv");
+const fs = require('fs');
+
+dotenv.config();
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -402,6 +412,131 @@ app.get("/distinct-values", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+let assistant
+async function createAssistant() {
+  try {
+    const file = await openai.files.create({
+      file: fs.createReadStream("./client/src/newVar.json"),
+      purpose: "assistants",
+  });
+
+  assistant = await openai.beta.assistants.create({
+    name: "scf helper",
+    instructions: "You are an expert assistant specialized in the Survey of Consumer Finance (SCF) dataset with a unique capability. Whenever users have questions about the SCF dataset, you only refer to the specific file I have uploaded, which contains detailed and up-to-date data and information, do not provide information that's not within the file. Your role involves providing clear, accurate, and detailed explanations, insights, and guidance based on the contents of this file. You assist with interpreting data, understanding complex financial concepts, identifying relevant data points within the file, and navigating through the dataset for specific financial analyses. Your responses are in user-friendly language to make complex information accessible to both experts and novices in financial data. This specialized assistance is rooted in your extensive knowledge of the SCF's structure, content, and practical applications in financial research and policy-making, all while consistently referring to the uploaded file for the most accurate and relevant information.",
+    tools: [{ type: "retrieval" }],
+    model: "gpt-3.5-turbo-1106",
+    file_ids: [file.id],
+  });
+  }catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+createAssistant()
+
+// async function interactWithAssistant(userQuery) {
+//   try {
+    
+
+//     const thread = await openai.beta.threads.create();
+
+//     const message = await openai.beta.threads.messages.create(thread.id, {
+//       role: "user",
+//     //   content: "I want to know the difference of wage between different races, what variables should I look into in scf",
+//     // content:"what category is the race variable under?"
+//     content: userQuery,
+//     });
+
+//     const run = await openai.beta.threads.runs.create(thread.id, {
+//       assistant_id: assistant.id,
+//     });
+
+//     console.log(run);
+
+//     // Check Status Function
+//     const checkStatus = async (threadId, runId) => {
+//       let runStatus = await openai.beta.threads.runs.retrieve(threadId, runId);
+//       if (runStatus.status === "completed") {
+//         let messages = await openai.beta.threads.messages.list(threadId);
+//         console.log(messages)
+//         messages.data.forEach((message) => {
+//           const role = message.role;
+//           const content = message.content[0].text.value;
+//           if (role === "assistant") {
+//             console.log(content)
+//             return content;
+//           }
+//         });
+//       } else {
+//         console.log("run is not completed yet")
+//       }
+//     };
+
+//     // Set a timeout to check the status
+//     setTimeout(() => {
+//       const assistantReply = checkStatus(thread.id, run.id)
+//       return assistantReply
+//     }, 20000);
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }
+
+async function interactWithAssistant(userQuery) {
+  try {
+    const thread = await openai.beta.threads.create();
+    await openai.beta.threads.messages.create(thread.id, {
+      role: "user",
+      content: userQuery,
+    });
+
+    const run = await openai.beta.threads.runs.create(thread.id, { assistant_id: assistant.id });
+
+    // Wait and Check Status
+    const assistantReply = await waitForCompletion(thread.id, run.id);
+    return assistantReply;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+async function waitForCompletion(threadId, runId) {
+  let attempt = 0;
+  const maxAttempts = 10;
+  while (attempt < maxAttempts) {
+    const runStatus = await openai.beta.threads.runs.retrieve(threadId, runId);
+    if (runStatus.status === "completed") {
+      const messages = await openai.beta.threads.messages.list(threadId);
+      for (let message of messages.data) {
+        if (message.role === "assistant") {
+          return message.content[0].text.value;
+        }
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
+    attempt++;
+  }
+  throw new Error("Assistant did not complete in time");
+}
+
+// ...rest of the code for app.post('/api/chat', ...)
+
+
+app.post('/api/chat', async (req, res) => {
+  const userMessage = req.body.message;
+  
+  // OpenAI API call
+  try {
+    const assistantResponse = await interactWithAssistant(userMessage);
+
+    console.log("assistant response:", assistantResponse)
+    res.json({ reply: assistantResponse });
+  } catch (error) {
+    res.status(500).json({ error: 'Error in communicating with OpenAI' });
   }
 });
 
