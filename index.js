@@ -528,7 +528,7 @@ async function waitForCompletion(threadId, runId) {
 
 app.post('/api/chat', async (req, res) => {
   const userMessage = req.body.message;
-  
+
   // OpenAI API call
   try {
     const assistantResponse = await interactWithAssistant(userMessage);
