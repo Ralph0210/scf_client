@@ -23,7 +23,7 @@ app.use(cors());
 
 // Define the tables for each year
 const YearTables = {
-  1989: scfp1989,
+  1989: scfp1989, 
   1992: scfp1992,
   1995: scfp1995,
   1998: scfp1998,
