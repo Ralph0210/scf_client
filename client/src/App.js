@@ -6,7 +6,7 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import Analytics_page from "./components/Analytics_page/Analytics_page";
 import { useState, useEffect } from "react";
 import Map from "./components/Map/Map";
-
+import Helper from "./components/Helper/Helper";
 
 
 
@@ -68,6 +68,7 @@ function App() {
     <div className="App">
       <ScrollToTop />
       <Navbar />
+      <Helper />
       <Routes>
         <Route
           path="/"

@@ -1,25 +1,9 @@
 import './about.css'
 import React, { useState, useEffect } from 'react';
 import Footer from '../Footer/Footer'
-import axios from 'axios';
 
-const baseURL = 'http://localhost:3001';
-
-const api = axios.create({
-  baseURL: baseURL,
-});
 
 const About = () => {
-  const [message, setMessage] = useState('');
-  const [conversation, setConversation] = useState([]);
-
-    const sendMessage = async () => {
-      const response = await api.post('/api/chat', { message });
-      setConversation([...conversation, { user: message, reply: response.data.reply }]);
-      console.log(response.data.reply);
-      setMessage('');
-    };
-  
 
   const Mailto = ({ email, subject = '', body = '', children }) => {
     let params = subject || body ? '?' : '';
@@ -41,23 +25,6 @@ const About = () => {
     <p>We value your feedback and questions. If you have any inquiries, suggestions, or just want to say hello, please feel free to reach out to us at <Mailto email="ralphchang@utexas.edu" subject="Hello" body="Hello!">
     ralphchang@utexas.edu
   </Mailto>.</p>
-
-  <div className='chatroom'>
-      <div className='message'>
-        {conversation.map((m, index) => (
-          <div key={index}>
-            <p>User: {m.user}</p>
-            <p>Assistant: {m.reply}</p>
-          </div>
-        ))}
-      </div>
-      <input 
-        type='text' 
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button type='submit' onClick={sendMessage}>Enter</button>
-    </div>
     
     </div>
     <Footer/>
